@@ -6,16 +6,21 @@ package game;
  */
 public class EuchreGame {
 	
+	/**
+	 * 
+	 */
 	private Deck drawDeck;
+	
+	/**
+	 * 
+	 */
 	private Deck discardDeck;
 	
-	
-	
+	/**
+	 * 
+	 */
 	public EuchreGame() {
 		
 	}
 	
-	private class Player {
-		
-	}
 }

@@ -3,8 +3,7 @@ package game;
 import java.util.ArrayList;
 
 /**
- * 
- * @author 
+ * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
  *
  */
 public class Deck {
@@ -15,10 +14,10 @@ public class Deck {
 	private ArrayList<Card> cards;
 	
 	/**
-	 * Initializes a standard 52 deck of cards
+	 * Initializes a standard 52 deck of cards.
 	 */
 	public Deck() {
-		//
+		
 	}
 	
 	/**
@@ -30,7 +29,7 @@ public class Deck {
 	
 	/**
 	 * 
-	 * @return
+	 * @return The card delt out of the deck.
 	 */
 	public Card deal() {
 		

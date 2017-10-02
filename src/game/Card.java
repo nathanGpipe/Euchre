@@ -1,5 +1,9 @@
 package game;
 
+/**
+ * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
+ *
+ */
 public class Card implements Comparable<Card>{
 	
 	private String name;
