@@ -14,11 +14,18 @@ public class Deck {
 	private ArrayList<Card> cards;
 	
 	/**
-	 * Initializes a standard 52 deck of cards.
+	 * 
+	 */
+	private ArrayList<Card> discard;
+	
+	
+	/**
+	 * Initializes a 24 card Euchre deck.
 	 */
 	public Deck() {
 		
 	}
+	
 	
 	/**
 	 * 
@@ -26,6 +33,16 @@ public class Deck {
 	public void shuffle() {
 		
 	}
+	
+	/**
+	 * 
+	 * @param c The card to be moved from the draw deck to the discard pile.
+	 */
+	public void discard(final Card c) {
+		cards.remove(c);
+		discard.add(c);
+	}
+
 	
 	/**
 	 * 
