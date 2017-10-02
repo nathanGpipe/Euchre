@@ -10,9 +10,18 @@ public class Card implements Comparable<Card>{
 		return value;
 	}
 	
+	public String getName() {
+		return name;
+	}
 	
-	public Card() {
-		
+	public Suit getSuit() {
+		return suit;
+	}
+	
+	public Card(String n, int v, Suit s) {
+		name = n;
+		value = v;
+		suit = s;
 	}
 	
 	/**
@@ -20,7 +29,6 @@ public class Card implements Comparable<Card>{
 	 * @return Returns the difference between the two cards values.
 	 */
 	public int compareTo(final Card c) {
-		
 		return this.value - c.getValue();
 	}
 }
