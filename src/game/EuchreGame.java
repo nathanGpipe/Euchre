@@ -1,8 +1,7 @@
 package game;
 
 /**
- * Wooooaaaaaahooooooo Im a javadoc comment
- * @author Nathan Pipe, Tressa Groelsma, Saxton 
+ * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
  *
  */
 public class EuchreGame {
