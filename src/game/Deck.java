@@ -38,7 +38,7 @@ public class Deck {
 	
 	/**
 	 * 
-	 * @return
+	 * @return thing
 	 */
 	public Card deal() {
 		
