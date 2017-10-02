@@ -64,4 +64,12 @@ public class Card implements Comparable<Card> {
 	public int compareTo(final Card c) {
 		return this.value - c.getValue();
 	}
+	
+	/**
+	 * @return Returns information about the object in string form.
+	 */
+	public String toString() {
+		return name + " of " + suit;
+	}
+
 }
