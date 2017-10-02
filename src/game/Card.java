@@ -1,31 +1,64 @@
 package game;
 
-public class Card implements Comparable<Card>{
+/**
+ * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
+ *
+ */
+public class Card implements Comparable<Card> {
 	
+	/**
+	 * 
+	 */
 	private String name;
+	
+	/**
+	 * 
+	 */
 	private int value;
+	
+	/**
+	 * 
+	 */
 	private Suit suit;
 	
+	/**
+	 * 
+	 * @return The cards value.
+	 */
 	public int getValue() {
 		return value;
 	}
 	
+	/**
+	 * 
+	 * @return The cards name.
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * 
+	 * @return The cards suit.
+	 */
 	public Suit getSuit() {
 		return suit;
 	}
 	
-	public Card(String n, int v, Suit s) {
+	/**
+	 * 
+	 * @param n The cards name.
+	 * @param v The cards value.
+	 * @param s The cards suit.
+	 */
+	public Card(final String n, final int v, final Suit s) {
 		name = n;
 		value = v;
 		suit = s;
 	}
 	
 	/**
-	 * 
+	 * @param c The card which you wish to compare to.
 	 * @return Returns the difference between the two cards values.
 	 */
 	public int compareTo(final Card c) {
