@@ -4,6 +4,8 @@ package game;
  * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
  *
  */
+
+//I'm just making sure I have git configured corrrectly on my laptop
 public class Card implements Comparable<Card> {
 	
 	/**
