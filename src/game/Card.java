@@ -5,26 +5,24 @@ package game;
  *
  */
 
-//I'm just making sure I have git configured corrrectly on my laptop
 public class Card implements Comparable<Card> {
 	
 	/**
-	 * 
+	 * Written value of the card (Eight, Queen, etc.)
 	 */
 	private String name;
 	
 	/**
-	 * 
+	 * Value of the card (Jack = 11, Queen = 12, King = 13, Ace = 14)
 	 */
 	private int value;
 	
 	/**
-	 * 
+	 * Hearts, Diamonds, Clubs, or Spades
 	 */
 	private Suit suit;
 	
 	/**
-	 * 
 	 * @return The cards value.
 	 */
 	public int getValue() {
@@ -32,7 +30,6 @@ public class Card implements Comparable<Card> {
 	}
 	
 	/**
-	 * 
 	 * @return The cards name.
 	 */
 	public String getName() {
@@ -40,7 +37,6 @@ public class Card implements Comparable<Card> {
 	}
 	
 	/**
-	 * 
 	 * @return The cards suit.
 	 */
 	public Suit getSuit() {
@@ -48,7 +44,6 @@ public class Card implements Comparable<Card> {
 	}
 	
 	/**
-	 * 
 	 * @param n The cards name.
 	 * @param v The cards value.
 	 * @param s The cards suit.
