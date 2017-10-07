@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 //import javax.smartcardio.Card;
 
@@ -61,13 +62,13 @@ public class Deck {
 	 * Shuffles the order of the active cards in cards
 	 */
 	public void shuffle() {
-
+		Collections.shuffle(cards);
 	}
 
 	/**
 	 * 
 	 * @param c
-	 *            The card to be moved from the draw deck to the discard pile.
+	 * The card to be moved from the draw deck to the discard pile.
 	 */
 	public void discard(final Card c) {
 		cards.remove(c);
@@ -79,7 +80,7 @@ public class Deck {
 	 * @return The card delt out of the deck.
 	 */
 	public Card deal() {
-
+		
 		return null;
 	}
 

@@ -2,7 +2,7 @@ package game;
 
 /**
  * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
- *
+ * Class for 
  */
 
 public class Card implements Comparable<Card> {
