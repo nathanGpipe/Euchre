@@ -38,8 +38,9 @@ public class Player {
 	/**
 	 * Chooses whether or not to have the dealer pick up the initial card.
 	 * @return True if the player wants them to pick it up.
+	 * @param c ddd
 	 */
-	public boolean pickUp() {
+	public boolean pickUp(final Card c) {
 		
 		return false;
 	}
