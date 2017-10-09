@@ -2,7 +2,7 @@ package game;
 
 /**
  * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
- *
+ * Enumerated class consisting of the four possible suits.
  */
 public enum Suit {
 	/**

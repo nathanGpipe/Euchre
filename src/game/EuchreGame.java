@@ -6,15 +6,9 @@ package game;
  */
 public class EuchreGame {
 	
-	/**
-	 * 
-	 */
-	private Deck drawDeck;
+	private Player[] players;
 	
-	/**
-	 * 
-	 */
-	private Deck discardDeck;
+	private int dealerIndex;
 	
 	/**
 	 * 
@@ -22,5 +16,7 @@ public class EuchreGame {
 	public EuchreGame() {
 		
 	}
+	
+	
 	
 }
