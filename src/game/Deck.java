@@ -16,6 +16,7 @@ public class Deck {
 	 * Collection of all active cards.
 	 */
 	private ArrayList<Card> cards;
+	
 	/**
 	 * 
 	 */
