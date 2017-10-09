@@ -53,6 +53,16 @@ public class EuchreGame {
 	 * The active trump suit.
 	 */
 	private Suit trump;
+	
+	/**
+	 * The card on top of the discard pile.
+	 */
+	private Card topCard;
+
+	/**
+	 * 0 - Playing, 1 - Team 1 Wins, 2 - Team 2 wins.
+	 */
+	private int gameState;
 
 	/**
 	 * Runs the Euchre game.
@@ -74,83 +84,38 @@ public class EuchreGame {
 		
 		trump = null;
 
-		while (team1score < 10 || team2score < 10) {
-			trick();
-			dealerIndex++;
-			if (dealerIndex == 4) {
-				dealerIndex = 0;
-			}
-		}
+//		while (team1score < 10 || team2score < 10) {
+//			//trick();
+//			dealerIndex++;
+//			if (dealerIndex == 4) {
+//				dealerIndex = 0;
+//			}
+//		}
 	}
 
 	/**
-	 * Runs a trick of the game.
+	 * This method asks the player of the given index whether or not
+	 * they want the dealer to pick up the top card of the discard
+	 * pile.
+	 * 
+	 * @param index The index of the player to ask.
+	 * @return True if they want the dealer to pick the card up,
+	 * false if not/
 	 */
-	private void trick() {
-		cardDeck.shuffle();
-		deal();
-		Card top = cardDeck.deal();
-		int curPlayer = dealerIndex++;
-		if (curPlayer == 4) {
-			curPlayer = 0;
-		}
-		for (int i = 0; i < 4; i++) {
-			if (players[curPlayer].pickUp()) {
-				if (dealerIndex == curPlayer) {
-					// TODO: Prompt player to swap card
-					players[0].getHand(); //placeholder
-				} else {
-					players[dealerIndex].swap(top);
-				}
-				trump = top.getSuit();
-				break;
-			}
-			curPlayer++;
-			if (curPlayer == 4) {
-				curPlayer = 0;
+	public boolean dealerCard(final int index) {
+		if (players[index].pickUp(topCard)) {
+			trump = topCard.getSuit();
+			if (dealerIndex == 0) { 
+				// if the dealer is the player don't swap
+				return true;
+			} else { 
+				// have the dealer swap out the top card 
+				// for something in their hand
+				players[dealerIndex].swap(topCard);
+				return true;
 			}
 		}
-		if (trump == null) {
-			curPlayer = dealerIndex++;
-			if (curPlayer == 4) {
-				curPlayer = 0;
-			}
-			for (int i = 0; i < 4; i++) {
-				Suit possTrump = players[curPlayer].chooseTrump();
-				if (possTrump != null) { 
-					// if null they chose not to pick trump
-					trump = possTrump;
-					break;
-				}
-				curPlayer++;
-				if (curPlayer == 4) {
-					curPlayer = 0;
-				}
-			}
-		}
-		
-	}
-	
-	private void round() {
-		int curPlayer = dealerIndex++;
-		if (curPlayer == 4) {
-			curPlayer = 0;
-		}
-		//runs through a round
-		for (int i = 0; i < 4; i++) {
-			Card play = null;
-			if (curPlayer == 0) {
-				// TODO: Prompt player for card choice
-				players[0].getHand(); // placeholder
-			} else {
-				play = players[curPlayer].choosePlay(cardsPlayed, trump);
-			}
-			cardsPlayed.add(play);
-			curPlayer++;
-			if (curPlayer == 4) {
-				curPlayer = 0;
-			}
-		}
+		return false;
 	}
 
 	/**
@@ -180,6 +145,7 @@ public class EuchreGame {
 				players[curDeal].addToHand(cardDeck.deal());
 			}
 		}
+		topCard = cardDeck.deal();
 	}
 
 	/**
