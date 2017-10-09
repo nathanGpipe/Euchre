@@ -16,10 +16,6 @@ public class Deck {
 	 * Collection of all active cards.
 	 */
 	private ArrayList<Card> cards;
-	/**
-	 * 
-	 */
-	private String[] cardNames = {"One", "Two", "Three"};
 	
 	/**
 	 * Collection of cards that are not active in the game.
@@ -45,7 +41,7 @@ public class Deck {
 		cards.add(new Card("Queen", 12, Suit.DIAMONDS));
 		cards.add(new Card("King", 13, Suit.DIAMONDS));
 		cards.add(new Card("Ace", 14, Suit.DIAMONDS));
-
+		
 		// Creating clubs
 		cards.add(new Card("Nine", 9, Suit.CLUBS));
 		cards.add(new Card("Ten", 10, Suit.CLUBS));
@@ -61,6 +57,9 @@ public class Deck {
 		cards.add(new Card("Queen", 12, Suit.SPADES));
 		cards.add(new Card("King", 13, Suit.SPADES));
 		cards.add(new Card("Ace", 14, Suit.SPADES));
+		
+		// Initializes to discard pile to an empty ArrayList
+		discard = new ArrayList<Card>();
 	}
 
 	/**

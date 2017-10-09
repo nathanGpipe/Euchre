@@ -8,17 +8,17 @@ package game;
 public class Card implements Comparable<Card> {
 	
 	/**
-	 * Written value of the card (Eight, Queen, etc.)
+	 * Written value of the card (Eight, Queen, etc.).
 	 */
 	private String name;
 	
 	/**
-	 * Value of the card (Jack = 11, Queen = 12, King = 13, Ace = 14)
+	 * Value of the card (Jack = 11, Queen = 12, King = 13, Ace = 14).
 	 */
 	private int value;
 	
 	/**
-	 * Hearts, Diamonds, Clubs, or Spades
+	 * Hearts, Diamonds, Clubs, or Spades.
 	 */
 	private Suit suit;
 	
