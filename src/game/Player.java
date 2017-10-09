@@ -96,6 +96,7 @@ public class Player {
 	/**
 	 * Chooses whether or not to have the dealer pick up the initial card.
 	 * 
+	 * @param c The card to check for the dealer to pick up.
 	 * @return True if the player wants them to pick it up.
 	 */
 
@@ -104,7 +105,8 @@ public class Player {
 	}
 
 	/**
-	 * Swaps the card on the top of the discard pile with one in the player's hand.
+	 * Swaps the card on the top of the discard pile with 
+	 * one in the player's hand.
 	 * 
 	 * @param c
 	 *            The card on top of the discard pile.
