@@ -27,6 +27,34 @@ public class Player {
 	}
 	
 	/**
+	 * Chooses a suit to be trump.
+	 * @return The desired suit to be trump, or NULL if no choice.
+	 */
+	public Suit chooseTrump() {
+		
+		return null;
+	}
+	
+	/**
+	 * Chooses whether or not to have the dealer pick up the initial card.
+	 * @return True if the player wants them to pick it up.
+	 */
+	public boolean pickUp() {
+		
+		return false;
+	}
+	
+	/**
+	 * Swaps the card on the top of the discard pile with one
+	 * in the player's hand.
+	 * 
+	 * @param c The card on top of the discard pile.
+	 */
+	public void swap(final Card c) {
+		
+	}
+	
+	/**
 	 * Looks at what cards are on the table and chooses which card to play.
 	 * 
 	 * @param table An ArrayList of cards that have been played this trick.
