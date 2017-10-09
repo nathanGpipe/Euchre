@@ -28,22 +28,56 @@ public class Player {
 	
 	/**
 	 * Chooses a suit to be trump.
+	 * Judgement based on quantity of 
 	 * @return The desired suit to be trump, or NULL if no choice.
 	 */
 	public Suit chooseTrump() {
+		int numClubs = 0;
+		int numSpades = 0;
+		int numDiamonds = 0;
+		int numHearts = 0;
 		
-		return null;
+		int numBlackBowers = 0;
+		int numRedBowers = 0;
+		
+		for(int i = 0; i < hand.size(); i++) {
+			if(hand.get(i).getSuit() == Suit.CLUBS) {
+				numClubs++;
+				if(hand.get(i).getName() == "Jack") 
+					numBlackBowers++;
+			}
+			if(hand.get(i).getSuit() == Suit.SPADES) {
+				numSpades++;
+				if(hand.get(i).getName() == "Jack") 
+					numBlackBowers++;
+			}
+			if(hand.get(i).getSuit() == Suit.DIAMONDS) {
+				numDiamonds++;
+				if(hand.get(i).getName() == "Jack") 
+					numRedBowers++;
+			}
+			if(hand.get(i).getSuit() == Suit.HEARTS) {
+				numHearts++;
+				if(hand.get(i).getName() == "Jack") 
+					numRedBowers++;
+			}
+		}
+		
+			
+			
+		
 	}
 	
 	/**
 	 * Chooses whether or not to have the dealer pick up the initial card.
 	 * @return True if the player wants them to pick it up.
 	 */
-	public boolean pickUp() {
+	public boolean pickUp(Card c) {
 		
 		return false;
 	}
-	
+	ost
+	discard = new ArrayList<Card>();
 	/**
 	 * Swaps the card on the top of the discard pile with one
 	 * in the player's hand.

@@ -195,7 +195,10 @@ public class EuchreGame {
 	 * @param players The players of the game.
 	 */
 	public void setPlayers(final Player[] players) {
-		this.players = players;
+		this.pla	/**
+		 * Team 2 points during a round.
+		 */
+		private int team2points;yers = players;
 	}
 
 	/**
