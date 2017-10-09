@@ -13,20 +13,16 @@ import java.util.Collections;
 public class Deck {
 
 	/**
-	 * Collection of all active cards
+	 * Collection of all active cards.
 	 */
 	private ArrayList<Card> cards;
-<<<<<<< HEAD
 	/**
 	 * 
 	 */
 	private String[] cardNames = {"One", "Two", "Three"};
 	
-=======
-
->>>>>>> branch 'master' of https://github.com/nathanGpipe/Euchre
 	/**
-	 * Collection of cards that are not active in the game
+	 * Collection of cards that are not active in the game.
 	 */
 	private ArrayList<Card> discard;
 
@@ -34,13 +30,6 @@ public class Deck {
 	 * Initializes a 24 card Euchre deck.
 	 */
 	public Deck() {
-<<<<<<< HEAD
-		//
-		Suit curSuit = Suit.HEARTS;
-		for (int i = 1; i < 14; i++) {
-			Card curCard = new Card("", i, curSuit);
-		}
-=======
 		// Creating hearts
 		cards.add(new Card("Nine", 9, Suit.HEARTS));
 		cards.add(new Card("Ten", 10, Suit.HEARTS));
@@ -72,33 +61,33 @@ public class Deck {
 		cards.add(new Card("Queen", 12, Suit.SPADES));
 		cards.add(new Card("King", 13, Suit.SPADES));
 		cards.add(new Card("Ace", 14, Suit.SPADES));
->>>>>>> branch 'master' of https://github.com/nathanGpipe/Euchre
 	}
 
 	/**
-	 * Shuffles the order of the active cards in cards
+	 * Shuffles the order of the active cards in cards.
 	 */
 	public void shuffle() {
 		Collections.shuffle(cards);
 	}
 
-	/**
+	/** 
+	 * Removes a card from the deck and puts it in the discard pile.
 	 * 
-	 * @param c
-	 * The card to be moved from the draw deck to the discard pile.
+	 * @param c The card to be discarded.
+	 * @return c The card that was discarded.
 	 */
-	public void discard(final Card c) {
+	public Card discard(final Card c) {
 		cards.remove(c);
 		discard.add(c);
+		return c;
 	}
 
 	/**
-	 * 
-	 * @return thing
+	 * Sends the card at the top of the deck to be dealt.
+	 * @return The card at the top of the deck.
 	 */
 	public Card deal() {
-		
-		return null;
+		return discard(cards.get(0));
 	}
 
 }
