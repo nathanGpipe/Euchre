@@ -91,7 +91,6 @@ public class Player {
 		} else {
 			return null;
 		}
-
 	}
 
 	/**
@@ -99,8 +98,8 @@ public class Player {
 	 * 
 	 * @return True if the player wants them to pick it up.
 	 */
-	public boolean pickUp(Card c) {
 
+	public boolean pickUp(final Card c) {
 		return false;
 	}
 

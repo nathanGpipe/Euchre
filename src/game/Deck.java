@@ -41,10 +41,7 @@ public class Deck {
 		cards.add(new Card("Queen", 12, Suit.DIAMONDS));
 		cards.add(new Card("King", 13, Suit.DIAMONDS));
 		cards.add(new Card("Ace", 14, Suit.DIAMONDS));
-		/**
-		 * 
-		 */
-		private String[] cardNames = {"One", "Two", "Three"};
+		
 		// Creating clubs
 		cards.add(new Card("Nine", 9, Suit.CLUBS));
 		cards.add(new Card("Ten", 10, Suit.CLUBS));
