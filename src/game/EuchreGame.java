@@ -83,6 +83,8 @@ public class EuchreGame {
 		cardsPlayed = new ArrayList<Card>(4);
 		
 		trump = null;
+		
+		gameState = 0;
 
 //		while (team1score < 10 || team2score < 10) {
 //			//trick();
@@ -274,6 +276,22 @@ public class EuchreGame {
 	 */
 	public void setTrump(final Suit trump) {
 		this.trump = trump;
+	}
+
+	/**
+	 * Returns the state of the game.
+	 * @return The state of the game
+	 */
+	public int getGameState() {
+		return gameState;
+	}
+
+	/**
+	 * Sets the state of the game.
+	 * @param gameState The state to set the game to.
+	 */
+	public void setGameState(final int gameState) {
+		this.gameState = gameState;
 	}
 
 }

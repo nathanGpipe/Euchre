@@ -26,6 +26,8 @@ public class Deck {
 	 * Initializes a 24 card Euchre deck.
 	 */
 	public Deck() {
+		cards = new ArrayList<Card>();
+		
 		// Creating hearts
 		cards.add(new Card("Nine", 9, Suit.HEARTS));
 		cards.add(new Card("Ten", 10, Suit.HEARTS));
@@ -88,5 +90,23 @@ public class Deck {
 	public Card deal() {
 		return discard(cards.get(0));
 	}
+
+	/**
+	 * Returns the cards in the deck that haven't been discarded.
+	 * @return The deck of non-discarded cards.
+	 */
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
+
+	/**
+	 * Returns the discarded cards.
+	 * @return The discarded cards.
+	 */
+	public ArrayList<Card> getDiscard() {
+		return discard;
+	}
+	
+	
 
 }
