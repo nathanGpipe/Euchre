@@ -17,7 +17,7 @@ public class EuchreGame {
 	 * Score for team 1.
 	 */
 	private int team1score;
-	
+
 	/**
 	 * Team 1 points during a round.
 	 */
@@ -27,7 +27,7 @@ public class EuchreGame {
 	 * Score for team 2.
 	 */
 	private int team2score;
-	
+
 	/**
 	 * Team 2 points during a round.
 	 */
@@ -43,17 +43,17 @@ public class EuchreGame {
 	 * The deck of cards for the game.
 	 */
 	private Deck cardDeck;
-	
+
 	/**
 	 * Cards that have been played on the table.
 	 */
 	private ArrayList<Card> cardsPlayed;
-	
+
 	/**
 	 * The active trump suit.
 	 */
 	private Suit trump;
-	
+
 	/**
 	 * The card on top of the discard pile.
 	 */
@@ -79,20 +79,20 @@ public class EuchreGame {
 		team2score = 0;
 
 		dealerIndex = (int) (Math.random() * 4);
-		
+
 		cardsPlayed = new ArrayList<Card>(4);
-		
+
 		trump = null;
-		
+
 		gameState = 0;
 
-//		while (team1score < 10 || team2score < 10) {
-//			//trick();
-//			dealerIndex++;
-//			if (dealerIndex == 4) {
-//				dealerIndex = 0;
-//			}
-//		}
+		//		while (team1score < 10 || team2score < 10) {
+		//			//trick();
+		//			dealerIndex++;
+		//			if (dealerIndex == 4) {
+		//				dealerIndex = 0;
+		//			}
+		//		}
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class EuchreGame {
 	 * 
 	 * @param index The index of the player to ask.
 	 * @return True if they want the dealer to pick the card up,
-	 * false if not/
+	 * false if not.
 	 */
 	public boolean dealerCard(final int index) {
 		if (players[index].pickUp(topCard)) {
@@ -121,9 +121,202 @@ public class EuchreGame {
 	}
 
 	/**
+	 * This method asks the player of the given index whether or not
+	 * they want to choose the trump if the dealer card had not been chosen.
+	 * 
+	 * @param index The index of the player to ask.
+	 * @return True if they chose a trump, false if not.
+	 */
+	public boolean chooseTrump(final int index) {
+		Suit trumpChosen = players[index].chooseTrump();
+		if (trumpChosen != null) {
+			trump = trumpChosen;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * This method asks the player of the given index to play a card
+	 * from their hand.
+	 * 
+	 * @param index The index of the player to ask.
+	 */
+	public void makePlay(final int index) {
+		if (cardsPlayed.size() >= 4) {
+			throw new IllegalStateException();
+		}
+		Card play = players[index].choosePlay(cardsPlayed, trump);
+		cardsPlayed.add(play);
+	}
+
+	/**
+	 * Returns the suit for the second bower.
+	 * @return The suit of the second bower.
+	 */
+	private Suit getOpTrump() {
+		switch (trump) {
+		case HEARTS:
+			return Suit.DIAMONDS;
+		case DIAMONDS:
+			return Suit.HEARTS;
+		case SPADES:
+			return Suit.CLUBS;
+		case CLUBS:
+			return Suit.SPADES;
+		}
+		return null;
+	}
+
+	/**
+	 * This method checks the four cards on the table to determine which
+	 * player won the round. It then updates the point totals  for the
+	 * round.
+	 */
+	public void checkWin() {
+		if (cardsPlayed.size() < 4) {
+			throw new IllegalStateException();
+		} else if (cardsPlayed.size() > 4) {
+			throw new IllegalArgumentException();
+		}
+
+		// keeps track of what players played trump cards
+		ArrayList<Integer> trumpIndexes = new ArrayList<Integer>();
+		// keeps track of the trump cards
+		ArrayList<Card> trumpCards = new ArrayList<Card>();
+
+		for (int i = 0; i < 4; i++) { // counts number of trump cards
+			if (cardsPlayed.get(i).getSuit() == trump) {
+				trumpIndexes.add((i + 1 + dealerIndex) % 4); 
+				// adds index of player of 
+				// the card based off dealer
+				trumpCards.add(cardsPlayed.get(i));
+			} else if (cardsPlayed.get(i).getSuit() == getOpTrump()
+					&& 
+					cardsPlayed.get(i).getValue() == 11) {
+				// checks for second bower
+				trumpIndexes.add((i + 1 + dealerIndex) % 4);
+				trumpCards.add(cardsPlayed.get(i));
+			}
+		}
+
+		if (trumpIndexes.size() == 0) { 
+			// no trump cards, check for initial suit
+			Suit main = cardsPlayed.get(0).getSuit();
+			for (int i = 0; i < 4; i++) {
+				if (cardsPlayed.get(i).getSuit() == main) {
+					if (main != getOpTrump() 
+						|| cardsPlayed.get(i).getValue() 
+						!= 11) {
+						// don't allow second bower
+						trumpIndexes.add((i + 1 + dealerIndex)
+								% 4); 
+						// adds index of player of
+						// the card based off dealer
+						// trumpIndexes used for main suit
+						trumpCards.add(cardsPlayed.get(i));
+						// trumpCards used for main suit
+					}
+				}
+			}
+			if (trumpIndexes.size() == 1) {
+				// means first player wins
+				// (they picked main suit)
+				if (trumpIndexes.get(0) == 0
+						|| trumpIndexes.get(0) == 2) {
+					team1points++;
+				} else {
+					team2points++;
+				}
+			} else {
+				int maxValue = 0;
+				int maxIndex = 0;
+				for (int i = 0; i < trumpCards.size(); i++) {
+					// finds the highest value card played
+					if (trumpCards.get(i).getValue() 
+							> maxValue) {
+						maxValue = trumpCards.get(i).getValue();
+						maxIndex = i;
+					}
+				}
+				if (trumpIndexes.get(maxIndex) == 0
+					|| trumpIndexes.get(maxIndex) == 2) {
+					team1points++;
+				} else {
+					team2points++;
+				}
+			}
+		} else if (trumpIndexes.size() == 1) {
+			// one trump card, it automatically wins
+			if (trumpIndexes.get(0) == 0 
+					|| trumpIndexes.get(0) == 2) {
+				team1points++;
+			} else {
+				team2points++;
+			}
+		} else {
+			boolean found = false;
+			for (int i = 0; i < trumpCards.size(); i++) {
+				// checks if first bower was played
+				if (trumpCards.get(i).getValue() == 11
+						&& 
+						trumpCards.get(i).getSuit() 
+						== trump) {
+					if (trumpIndexes.get(i) == 0
+						|| trumpIndexes.get(i) == 2) {
+						team1points++;
+					} else {
+						team2points++;
+					}
+					found = true;
+				}
+			}
+			if (!found) {
+				for (int i = 0; i < trumpCards.size(); i++) {
+					// checks if second bower was played
+					// assuming first bower wasn't played
+					if (trumpCards.get(i).getSuit() 
+							== getOpTrump()) {
+						if (trumpIndexes.get(i) == 0
+							|| trumpIndexes.get(i) 
+							== 2) {
+							team1points++;
+						} else {
+							team2points++;
+						}
+						found = true;
+					}
+				}
+				if (!found) {
+					int maxValue = 0;
+					int maxIndex = 0;
+					for (int i = 0; i < trumpCards.size(); 
+							i++) {
+						// finds highest card value
+						// assuming neither bower
+						// was played
+						if (trumpCards.get(i).getValue() 
+							> maxValue) {
+							maxValue = trumpCards.get(i).getValue();
+							maxIndex = i;
+						}
+					}
+					if (trumpIndexes.get(maxIndex) == 0
+						|| trumpIndexes.get(maxIndex) 
+						== 2) {
+						team1points++;
+					} else {
+						team2points++;
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Deals the cards.
 	 */
-	private void deal() {
+	public void deal() {
 		for (int i = 0; i < 8; i++) { // two cards to each player
 			for (int j = 0; j < 4; j++) { 
 				// goes through all four players
