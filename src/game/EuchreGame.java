@@ -366,14 +366,6 @@ public class EuchreGame {
 	}
 
 	/**
-	 * Sets the players.
-	 * @param players The players of the game.
-	 */
-	public void setPlayers(final Player[] players) {
-		this.players = players;
-	}
-
-	/**
 	 * Returns the score for team 1.
 	 * @return Team 1's score.
 	 */
@@ -491,14 +483,6 @@ public class EuchreGame {
 	 */
 	public int getGameState() {
 		return gameState;
-	}
-
-	/**
-	 * Sets the state of the game.
-	 * @param gameState The state to set the game to.
-	 */
-	public void setGameState(final int gameState) {
-		this.gameState = gameState;
 	}
 
 	/**

@@ -204,6 +204,54 @@ public class EuchreGameTest {
 	}
 	
 	/**
+	 * testCheckWin3 with team 2 winning.
+	 */
+	@Test
+	public void testCheckWin3A() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(2);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 9, Suit.HEARTS);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.CLUBS);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam2points() == 1);
+	}
+	
+	/**
+	 * testCheckWin3 with index 0 winning.
+	 */
+	@Test
+	public void testCheckWin3B() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(3);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 9, Suit.HEARTS);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.CLUBS);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1points() == 1);
+	}
+	
+	/**
 	 * This test checks that team 1's score
 	 * increases when they play the left
 	 * bower and more than one
@@ -231,6 +279,54 @@ public class EuchreGameTest {
 	}
 	
 	/**
+	 * testCheckWin4 with team 2 winning.
+	 */
+	@Test
+	public void testCheckWin4A() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(2);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 11, Suit.HEARTS);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.HEARTS);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam2points() == 1);
+	}
+	
+	/**
+	 * testCheckWin4 with index 0 winning.
+	 */
+	@Test
+	public void testCheckWin4B() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(3);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 11, Suit.HEARTS);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.HEARTS);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1points() == 1);
+	}
+	
+	/**
 	 * This test checks that team 1's score
 	 * increases when they play the left
 	 * bower, more than one
@@ -241,6 +337,8 @@ public class EuchreGameTest {
 	@Test
 	public void testCheckWin5() {
 		EuchreGame g = new EuchreGame();
+		g.getDealerIndex();
+		g.getCardsPlayed();
 		g.setTrump(Suit.HEARTS);
 		g.setDealerIndex(1);
 		
@@ -256,6 +354,8 @@ public class EuchreGameTest {
 		
 		g.setCardsPlayed(cList);
 		g.checkWin();
+		g.getTrump();
+		g.getTopCard();
 		assertTrue(g.getTeam1points() == 1);
 	}
 	
@@ -295,7 +395,7 @@ public class EuchreGameTest {
 	 * points.
 	 */
 	@Test
-	public void testCheckWin7() {
+	public void testCheckWin6A() {
 		EuchreGame g = new EuchreGame();
 		g.setTrump(Suit.DIAMONDS);
 		g.setDealerIndex(1);
@@ -318,13 +418,13 @@ public class EuchreGameTest {
 	/**
 	 * Same as testCheckWin6 but checking
 	 * getOpTrump() for clubs instead
-	 * of hearts.
+	 * of hearts, and having index 0 win.
 	 */
 	@Test
-	public void testCheckWin8() {
+	public void testCheckWin6B() {
 		EuchreGame g = new EuchreGame();
 		g.setTrump(Suit.CLUBS);
-		g.setDealerIndex(1);
+		g.setDealerIndex(2);
 		
 		ArrayList<Card> cList = new ArrayList<Card>();
 		Card a = new Card("", 9, Suit.CLUBS);
@@ -338,7 +438,7 @@ public class EuchreGameTest {
 		
 		g.setCardsPlayed(cList);
 		g.checkWin();
-		assertTrue(g.getTeam2points() == 1);
+		assertTrue(g.getTeam1points() == 1);
 	}
 	
 	/**
@@ -347,7 +447,7 @@ public class EuchreGameTest {
 	 * of hearts.
 	 */
 	@Test
-	public void testCheckWin9() {
+	public void testCheckWin6C() {
 		EuchreGame g = new EuchreGame();
 		g.setTrump(Suit.SPADES);
 		g.setDealerIndex(1);
@@ -375,7 +475,7 @@ public class EuchreGameTest {
 	 * played.
 	 */
 	@Test
-	public void testCheckWin10() {
+	public void testCheckWin7() {
 		EuchreGame g = new EuchreGame();
 		g.setTrump(Suit.HEARTS);
 		g.setDealerIndex(1);
@@ -396,13 +496,61 @@ public class EuchreGameTest {
 	}
 	
 	/**
+	 * testCheckWin7 with team 1 winning.
+	 */
+	@Test
+	public void testCheckWin7A() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(1);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 12, Suit.HEARTS);
+		cList.add(a);
+		Card b = new Card("", 10, Suit.HEARTS);
+		cList.add(b);
+		Card c = new Card("", 12, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1points() == 1);
+	}
+	
+	/**
+	 * testCheckWin7 with index 0 winning.
+	 */
+	@Test
+	public void testCheckWin7B() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(3);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 12, Suit.HEARTS);
+		cList.add(a);
+		Card b = new Card("", 10, Suit.HEARTS);
+		cList.add(b);
+		Card c = new Card("", 12, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1points() == 1);
+	}
+	
+	/**
 	 * This test checks that team 1's score
 	 * increases when no trump cards have been
 	 * played and nobody matched the suit
 	 * of the first player.
 	 */
 	@Test
-	public void testCheckWin11() {
+	public void testCheckWin8() {
 		EuchreGame g = new EuchreGame();
 		g.setTrump(Suit.HEARTS);
 		g.setDealerIndex(1);
@@ -423,6 +571,54 @@ public class EuchreGameTest {
 	}
 	
 	/**
+	 * testCheckWin8 but with team 2 winning.
+	 */
+	@Test
+	public void testCheckWin8A() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(2);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 9, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.DIAMONDS);
+		cList.add(b);
+		Card c = new Card("", 12, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam2points() == 1);
+	}
+	
+	/**
+	 * testCheckWin8 but with index 0 winning.
+	 */
+	@Test
+	public void testCheckWin8B() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(3);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 9, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.DIAMONDS);
+		cList.add(b);
+		Card c = new Card("", 12, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1points() == 1);
+	}
+	
+	/**
 	 * This test checks that team 2's score
 	 * increases when no trump cards have been
 	 * played, two cards matched the suit the
@@ -430,7 +626,7 @@ public class EuchreGameTest {
 	 * card was higher. 
 	 */
 	@Test
-	public void testCheckWin12() {
+	public void testCheckWin9() {
 		EuchreGame g = new EuchreGame();
 		g.setTrump(Suit.HEARTS);
 		g.setDealerIndex(1);
@@ -448,5 +644,167 @@ public class EuchreGameTest {
 		g.setCardsPlayed(cList);
 		g.checkWin();
 		assertTrue(g.getTeam2points() == 1);
+	}
+	
+	/**
+	 * testCheckWin9 with team 1 winning.
+	 */
+	@Test
+	public void testCheckWin9A() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(1);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 12, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.SPADES);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1points() == 1);
+	}
+	
+	/**
+	 * testCheckWin9 with person 2 winning.
+	 */
+	@Test
+	public void testCheckWin9B() {
+		EuchreGame g = new EuchreGame();
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(1);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 9, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.CLUBS);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.SPADES);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1points() == 1);
+	}
+	
+	/**
+	 * Tests the last of the code in
+	 * checkWin for team 1 winning the
+	 * trick to make sure team 1's score
+	 * increases.
+	 */
+	@Test
+	public void testCheckGameWin1() {
+		EuchreGame g = new EuchreGame();
+		g.setTeam1points(4);
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(1);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 12, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.SPADES);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam1score() == 1);
+	}
+	
+	/**
+	 * Tests the last of the code in
+	 * checkWin for team 2 winning the
+	 * trick to make sure team 2's score
+	 * increases.
+	 */
+	@Test
+	public void testCheckGameWin1A() {
+		EuchreGame g = new EuchreGame();
+		g.setTeam2points(4);
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(2);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 12, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.SPADES);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getTeam2score() == 1);
+	}
+	
+	/**
+	 * Tests the last of the code in
+	 * checkWin for team 1 winning the
+	 * game to make sure the gameState
+	 * changes.
+	 */
+	@Test
+	public void testCheckGameWin2() {
+		EuchreGame g = new EuchreGame();
+		g.setTeam1points(4);
+		g.setTeam1score(9);
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(1);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 12, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.SPADES);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getGameState() == 1);
+	}
+	
+	/**
+	 * Tests the last of the code in
+	 * checkWin for team 2 winning the
+	 * trick to make sure the gameState
+	 * changes.
+	 */
+	@Test
+	public void testCheckGameWin2A() {
+		EuchreGame g = new EuchreGame();
+		g.setTeam2points(4);
+		g.setTeam2score(9);
+		g.setTrump(Suit.HEARTS);
+		g.setDealerIndex(2);
+		
+		ArrayList<Card> cList = new ArrayList<Card>();
+		Card a = new Card("", 12, Suit.SPADES);
+		cList.add(a);
+		Card b = new Card("", 9, Suit.SPADES);
+		cList.add(b);
+		Card c = new Card("", 10, Suit.CLUBS);
+		cList.add(c);
+		Card d = new Card("", 11, Suit.CLUBS);
+		cList.add(d);
+		
+		g.setCardsPlayed(cList);
+		g.checkWin();
+		assertTrue(g.getGameState() == 2);
 	}
 }
