@@ -70,6 +70,10 @@ public class EuchreGame {
 	public EuchreGame() {
 		cardDeck = new Deck();
 		players = new Player[4];
+		players[0] = new Player();
+		players[1] = new Player();
+		players[2] = new Player();
+		players[3] = new Player();
 		players[0].setPartner(players[2]);
 		players[1].setPartner(players[3]);
 		players[2].setPartner(players[0]);
@@ -162,10 +166,9 @@ public class EuchreGame {
 			return Suit.HEARTS;
 		case SPADES:
 			return Suit.CLUBS;
-		case CLUBS:
+		default:
 			return Suit.SPADES;
 		}
-		return null;
 	}
 
 	/**
@@ -205,18 +208,13 @@ public class EuchreGame {
 			Suit main = cardsPlayed.get(0).getSuit();
 			for (int i = 0; i < 4; i++) {
 				if (cardsPlayed.get(i).getSuit() == main) {
-					if (main != getOpTrump() 
-						|| cardsPlayed.get(i).getValue() 
-						!= 11) {
-						// don't allow second bower
-						trumpIndexes.add((i + 1 + dealerIndex)
-								% 4); 
-						// adds index of player of
-						// the card based off dealer
-						// trumpIndexes used for main suit
-						trumpCards.add(cardsPlayed.get(i));
-						// trumpCards used for main suit
-					}
+					trumpIndexes.add((i + 1 + dealerIndex)
+							% 4); 
+					// adds index of player of
+					// the card based off dealer
+					// trumpIndexes used for main suit
+					trumpCards.add(cardsPlayed.get(i));
+					// trumpCards used for main suit
 				}
 			}
 			if (trumpIndexes.size() == 1) {
@@ -240,7 +238,7 @@ public class EuchreGame {
 					}
 				}
 				if (trumpIndexes.get(maxIndex) == 0
-					|| trumpIndexes.get(maxIndex) == 2) {
+						|| trumpIndexes.get(maxIndex) == 2) {
 					team1points++;
 				} else {
 					team2points++;
@@ -263,7 +261,7 @@ public class EuchreGame {
 						trumpCards.get(i).getSuit() 
 						== trump) {
 					if (trumpIndexes.get(i) == 0
-						|| trumpIndexes.get(i) == 2) {
+							|| trumpIndexes.get(i) == 2) {
 						team1points++;
 					} else {
 						team2points++;
@@ -278,8 +276,8 @@ public class EuchreGame {
 					if (trumpCards.get(i).getSuit() 
 							== getOpTrump()) {
 						if (trumpIndexes.get(i) == 0
-							|| trumpIndexes.get(i) 
-							== 2) {
+								|| trumpIndexes.get(i) 
+								== 2) {
 							team1points++;
 						} else {
 							team2points++;
@@ -296,14 +294,14 @@ public class EuchreGame {
 						// assuming neither bower
 						// was played
 						if (trumpCards.get(i).getValue() 
-							> maxValue) {
+								> maxValue) {
 							maxValue = trumpCards.get(i).getValue();
 							maxIndex = i;
 						}
 					}
 					if (trumpIndexes.get(maxIndex) == 0
-						|| trumpIndexes.get(maxIndex) 
-						== 2) {
+							|| trumpIndexes.get(maxIndex) 
+							== 2) {
 						team1points++;
 					} else {
 						team2points++;
@@ -311,34 +309,50 @@ public class EuchreGame {
 				}
 			}
 		}
+
+		if ((team1points + team2points) == 5) {
+			if (team1points > team2points) {
+				team1score++;
+			} else {
+				team2score++;
+			}
+			checkGameWin();
+			team1points = 0;
+			team2points = 0;
+		}
+	}
+
+	/**
+	 * Checks if either team has won the game.
+	 */
+	private void checkGameWin() {
+		if (team1score >= 10) {
+			gameState = 1;
+		} else if (team2score >= 10) {
+			gameState = 2;
+		}
 	}
 
 	/**
 	 * Deals the cards.
 	 */
 	public void deal() {
-		for (int i = 0; i < 8; i++) { // two cards to each player
-			for (int j = 0; j < 4; j++) { 
-				// goes through all four players
-				int curDeal = dealerIndex++;
-				if (curDeal == 4) {
-					curDeal = 0;
-				}
-				players[curDeal].addToHand(cardDeck.deal());
-				players[curDeal].addToHand(cardDeck.deal());
-			}
+		int curDeal = dealerIndex;
+		// two cards to each player
+		for (int j = 0; j < 4; j++) { 
+			// goes through all four players
+			curDeal = curDeal++;
+			players[curDeal].addToHand(cardDeck.deal());
+			players[curDeal].addToHand(cardDeck.deal());
 		}
-		for (int i = 0; i < 12; i++) { // three cards to each player
-			for (int j = 0; j < 4; j++) {
-				// goes through all four players
-				int curDeal = dealerIndex++;
-				if (curDeal == 4) {
-					curDeal = 0;
-				}
-				players[curDeal].addToHand(cardDeck.deal());
-				players[curDeal].addToHand(cardDeck.deal());
-				players[curDeal].addToHand(cardDeck.deal());
-			}
+		curDeal = dealerIndex;
+		// three cards to each player
+		for (int j = 0; j < 4; j++) {
+			// goes through all four players
+			curDeal = curDeal++;
+			players[curDeal].addToHand(cardDeck.deal());
+			players[curDeal].addToHand(cardDeck.deal());
+			players[curDeal].addToHand(cardDeck.deal());
 		}
 		topCard = cardDeck.deal();
 	}
@@ -485,6 +499,22 @@ public class EuchreGame {
 	 */
 	public void setGameState(final int gameState) {
 		this.gameState = gameState;
+	}
+
+	/**
+	 * Returns the top card of the discard pile.
+	 * @return The top card of the discard pile.
+	 */
+	public Card getTopCard() {
+		return topCard;
+	}
+
+	/**
+	 * Sets the top card of the discard pile.
+	 * @param topCard The top card of the discard pile.
+	 */
+	public void setTopCard(final Card topCard) {
+		this.topCard = topCard;
 	}
 
 }

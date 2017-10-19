@@ -34,7 +34,7 @@ public class PlayerTest {
 		for (int i = 0; i < hand1.size(); i++) {
 			p1.addToHand(hand1.get(i));
 		}
-		AssertEquals("Failed to choose proper trump", Suit.HEARTS, 
+		assertEquals("Failed to choose proper trump", Suit.HEARTS, 
 				p1.chooseTrump());
 	}
 

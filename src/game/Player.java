@@ -117,7 +117,7 @@ public class Player {
 	 * Private helper method to assist in AI functions.
 	 * @return the preferred suit, given the player's hand
 	 */
-	private Suit getFavoriteSuit() {
+	public Suit getFavoriteSuit() {
 		int numClubs = 0;
 		int numSpades = 0;
 		int numDiamonds = 0;
