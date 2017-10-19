@@ -319,6 +319,11 @@ public class EuchreGame {
 			checkGameWin();
 			team1points = 0;
 			team2points = 0;
+			cardDeck.resetDeck();
+			dealerIndex++;
+			if (dealerIndex == 4) {
+				dealerIndex = 0;
+			}
 		}
 	}
 

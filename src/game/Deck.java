@@ -82,6 +82,17 @@ public class Deck {
 		discard.add(c);
 		return c;
 	}
+	
+	/**
+	 * Moves all of the cards from the discard pile
+	 * to the deck.
+	 */
+	public void resetDeck() {
+		for (int i = 0; i < discard.size(); i++) {
+			cards.add(discard.get(i));
+		}
+		discard = new ArrayList<Card>();
+	}
 
 	/**
 	 * Sends the card at the top of the deck to be dealt.

@@ -762,7 +762,7 @@ public class EuchreGameTest {
 		g.setTeam1points(4);
 		g.setTeam1score(9);
 		g.setTrump(Suit.HEARTS);
-		g.setDealerIndex(1);
+		g.setDealerIndex(3);
 		
 		ArrayList<Card> cList = new ArrayList<Card>();
 		Card a = new Card("", 12, Suit.SPADES);
