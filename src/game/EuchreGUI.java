@@ -333,7 +333,7 @@ public class EuchreGUI extends JFrame {
 
 	/**
 	 * Formats a JButton to not be java styled, but just be a clickable
-	 * imageIcon
+	 * imageIcon.
 	 * @param b The button to be formatted.
 	 * @return A properly formatted button to look like a plain image.
 	 */
