@@ -132,6 +132,13 @@ public class EuchreGUI extends JFrame {
 
 
 	/**
+	 * Flags if the round has been completed, if so check the scores and reset
+	 * the table.
+	 */
+	private boolean roundFinished;
+
+
+	/**
 	 * Initializes variables, and handles the beginning state of the game.
 	 */
 	public EuchreGUI() {
@@ -149,6 +156,7 @@ public class EuchreGUI extends JFrame {
 
 		//choose trump
 		beginningPhase = true;
+		roundFinished = false;
 		passButton.setEnabled(true);
 		if (game.getDealerIndex() == 0) { // you're the dealer
 			passButton.setEnabled(true);
@@ -323,6 +331,10 @@ public class EuchreGUI extends JFrame {
 
 		// re-render components with changed imageicons
 		SwingUtilities.updateComponentTreeUI(this);
+
+		if(!roundFinished) {
+			trick();
+		}
 	}
 
 
@@ -441,104 +453,110 @@ public class EuchreGUI extends JFrame {
 	private class EventListener implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			System.out.println("Event");
-			if (beginningPhase) {
-				if (e.getSource().equals(passButton)) {
-					passButton.setEnabled(false);
-					for (int i = 0; i < game.getDealerIndex(); i++) {
-						if (game.dealerCard(i)) {
-							beginningPhase = false;
-							break;
-						}
-					}
-					if (beginningPhase) {
-						//ask each AI if they want to choose trump
-						if (!game.chooseTrump(1)) {
-							if (!game.chooseTrump(2)) {
-								game.chooseTrump(3);
-							}
-						}
-						beginningPhase = false;
-					}
-					trumpLabel.setText("Trump is: " 
-							+ game.getTrump().name());
-					//passButton.setEnabled(false);
-
-				//tell the dealer to pickup the card
-				} else if (e.getSource().equals(pickupButton) 
-						&& game.getDealerIndex() != 0) {
-					game.setTrump(game.getTopCard().getSuit());
-					System.out.println("picked up");
-					game.getPlayers()[game.getDealerIndex()]
-							.swap(game.getTopCard());
-					
-					
-					passButton.setEnabled(false);
-					trumpLabel.setText("Trump is: " 
-							+ game.getTrump().name());
-
-				} else {
-					// you've gotta choose trump
-					if (game.getDealerIndex() == 0) {
-						for (int i = 0; i < playerCards.get(0).size(); i++) {
-							if (e.getSource() == playerCards.get(0).get(i)) {
-								//sets trump
-								game.setTrump(game.getTopCard().getSuit());
-								trumpLabel.setText("Trump is: " 
-										+ game.getTrump().name());
-
-								//corrects the gui
-								playerCards.get(0).remove(i);
-								cardsPanel.remove(i);
-								
-								playerCards.get(0).add(
-										buildImageButton(
-												new JButton(
-											cardGraphic(game.getTopCard()))));
-								cardsPanel.add(playerCards.get(0).get(
-										playerCards.get(0).size() - 1));
+			try {
+				System.out.println("Event");
+				if (beginningPhase) {
+					if (e.getSource().equals(passButton)) {
+						passButton.setEnabled(false);
+						for (int i = 0; i < game.getDealerIndex(); i++) {
+							if (game.dealerCard(i)) {
 								beginningPhase = false;
-								
-								trumpLabel.setText("Trump is: " 
-										+ game.getTrump().name());
-								//passButton.setEnabled(false);
 								break;
 							}
 						}
-					}
-				}
-				//regular play
-			} else {
-				for (int i = 0; i < playerCards.get(0).size(); i++) {
-					if (e.getSource() == playerCards.get(0).get(i)) {
-						//plays the players card which corresponds to the card
-						//clicked
-						game.getCardsPlayed().add(
-								game.getPlayers()[0]
-										.getHand().get(i));
-						playerCards.get(0).remove(i);
-						cardsPanel.remove(i);
-
-						if (game.getDealerIndex() != 0) {
-							for (int j = 1; j < game.getDealerIndex(); j++) {
-								game.makePlay(i);
+						if (beginningPhase) {
+							//ask each AI if they want to choose trump
+							if (!game.chooseTrump(1)) {
+								if (!game.chooseTrump(2)) {
+									game.chooseTrump(3);
+								}
 							}
-						} else {
-							for (int j = 1; j < 4; j++) {
-								game.makePlay(i);
+							beginningPhase = false;
+						}
+						trumpLabel.setText("Trump is: " 
+								+ game.getTrump().name());
+						//passButton.setEnabled(false);
+
+						//tell the dealer to pickup the card
+					} else if (e.getSource().equals(pickupButton) 
+							&& game.getDealerIndex() != 0) {
+						game.setTrump(game.getTopCard().getSuit());
+						System.out.println("picked up");
+						game.getPlayers()[game.getDealerIndex()]
+								.swap(game.getTopCard());
+
+
+						passButton.setEnabled(false);
+						trumpLabel.setText("Trump is: " 
+								+ game.getTrump().name());
+
+					} else {
+						// you've gotta choose trump
+						if (game.getDealerIndex() == 0) {
+							for (int i = 0; i < playerCards.get(0).size(); i++) {
+								if (e.getSource() == playerCards.get(0).get(i)) {
+									//sets trump
+									game.setTrump(game.getTopCard().getSuit());
+									trumpLabel.setText("Trump is: " 
+											+ game.getTrump().name());
+
+									//corrects the gui
+									playerCards.get(0).remove(i);
+									cardsPanel.remove(i);
+
+									playerCards.get(0).add(
+											buildImageButton(
+											new JButton(
+											cardGraphic(game.getTopCard()))));
+									cardsPanel.add(playerCards.get(0).get(
+											playerCards.get(0).size() - 1));
+									beginningPhase = false;
+
+									trumpLabel.setText("Trump is: " 
+											+ game.getTrump().name());
+									//passButton.setEnabled(false);
+									break;
+								}
 							}
 						}
+					}
+					//regular play
+				} else {
+					for (int i = 0; i < playerCards.get(0).size(); i++) {
+						if (e.getSource() == playerCards.get(0).get(i)) {
+							//plays the players card which corresponds to the card
+							//clicked
+							game.getCardsPlayed().add(
+									game.getPlayers()[0]
+											.getHand().get(i));
+							playerCards.get(0).remove(i);
+							cardsPanel.remove(i);
 
-						game.checkWin();
+							if (game.getDealerIndex() != 0) {
+								for (int j = 1; j < game.getDealerIndex(); j++) {
+									game.makePlay(i);
+								}
+							} else {
+								for (int j = 1; j < 4; j++) {
+									game.makePlay(i);
+								}
+							}
 
-						scoreLabel.setText(scoreText());
+							game.checkWin();
+							if(game.getGameState() != 0) {
+								roundFinished = true;
+							}
 
+							scoreLabel.setText(scoreText());
+
+						}
 					}
 				}
+			} catch (Exception exc) {
+				System.out.println(exc);
+			} finally {
+				update();
 			}
-
-			update();
-			trick();
 
 		}
 
