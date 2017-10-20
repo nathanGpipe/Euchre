@@ -43,7 +43,7 @@ public class Player {
 	 * @return True if the player wants them to pick it up.
 	 */
 	public boolean pickUp(final Card c) {
-		if (c.getSuit() == getFavoriteSuit()) {
+		if (getFavoriteSuit() == c.getSuit()) {
 			return true;
 		}
 		return false;
@@ -57,7 +57,8 @@ public class Player {
 	 *            The card on top of the discard pile.
 	 */
 	public void swap(final Card c) {
-		
+		hand.remove(getWorstCard(c.getSuit()));
+		addToHand(c);
 	}
 
 	/**
@@ -70,7 +71,18 @@ public class Player {
 	 * @return A card from the player's hand that they choose to play.
 	 */
 	public Card choosePlay(final ArrayList<Card> table, final Suit trump) {
-		int index = 0;
+		if (table.size() == 0) {
+			//high off suit
+		}
+		if (table.size() == 1 ) {
+			
+		}
+		if (table.size() == 2) {
+			
+		}
+		if (table.size() == 3) {
+			
+		}
 		return hand.remove(index);
 	}
 
@@ -130,25 +142,25 @@ public class Player {
 		for (int i = 0; i < hand.size(); i++) {
 			if (hand.get(i).getSuit() == Suit.CLUBS) {
 				numClubs++;
-				if (hand.get(i).getName() == "Jack") {
+				if (hand.get(i).getName().equals("Jack")) {
 					numBlackBowers++;
 				}
 			}
 			if (hand.get(i).getSuit() == Suit.SPADES) {
 				numSpades++;
-				if (hand.get(i).getName() == "Jack") {
+				if (hand.get(i).getName().equals("Jack")) {
 					numBlackBowers++;
 				}
 			}
 			if (hand.get(i).getSuit() == Suit.DIAMONDS) {
 				numDiamonds++;
-				if (hand.get(i).getName() == "Jack") {
+				if (hand.get(i).getName().equals("Jack")) {
 					numRedBowers++;
 				}
 			}
 			if (hand.get(i).getSuit() == Suit.HEARTS) {
 				numHearts++;
-				if (hand.get(i).getName() == "Jack") {
+				if (hand.get(i).getName().equals("Jack")) {
 					numRedBowers++;
 				}
 			}
@@ -156,12 +168,12 @@ public class Player {
 
 		// Deciding on suit to pick based on counts.
 		if (numRedBowers == 2) {
-			if (numHearts >= numDiamonds) {
+			if (numHearts > numDiamonds) {
 				return Suit.HEARTS;
 			}
 			return Suit.DIAMONDS;
 		} else if (numBlackBowers == 2) {
-			if (numSpades >= numClubs) {
+			if (numSpades > numClubs) {
 				return Suit.SPADES;
 			}
 			return Suit.CLUBS;
@@ -171,10 +183,90 @@ public class Player {
 			return Suit.SPADES;
 		} else if (numDiamonds >= 3) {
 			return Suit.DIAMONDS;
-		} else if (numClubs >= 3) {
-			return Suit.CLUBS;
+		} else if (numHearts >= 3) {
+			return Suit.HEARTS;
 		} else {
 			return null;
+		}
+	}
+	
+	/**
+	 *Looks at the player's hand and find's the lowest off-suit card it can.
+	 * @param trump 
+	 * 			The current trump suit.
+	 * @return The index of the Player's worst card
+	 */
+	private int getWorstCard(final Suit trump) {
+		Card current = hand.get(0);
+		int index = 0;
+		for (int i = 1; i < hand.size(); i++) {
+			if (hand.get(i).getSuit() != trump 
+					|| current.getSuit() == trump) {
+				if (hand.get(i).getValue()
+						< current.getValue()
+						|| current.getSuit() == trump) {
+					current = hand.get(i);
+					index = i;
+				}
+			}
+		}
+		return index;
+	}
+	
+	/**
+	 * Player chooses their highest off-suit card.
+	 * @param trump The current trump suit.
+	 * @return The index of the card to lead the turn with.
+	 */
+	private int leadTurn(Suit trump) {
+		Card current = hand.get(0);
+		int index = 0;
+		for (int i = 1; i < hand.size(); i++) {
+			if (hand.get(i).getSuit() != trump 
+					&& hand.get(i).getValue() > current.getValue()) {
+				current = hand.get(i);
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	/**
+	 * Player chooses their best card of the current suit
+	 * or throws their lowest trump card.
+	 * @param current The suit that the turn was lead with.
+	 * @param trump The current trump suit.
+	 * @return The index of card to play.
+	 */
+	private int followSuit(Suit current, Suit trump) {
+		Card c = hand.get(0);
+		int index = 0;
+		
+		//Finds a card to follow with
+		for (int i = 0; i < hand.size(); i++) {
+			if (hand.get(i).getSuit() == current) {
+				c = hand.get(i);
+				index = i;
+				break;
+			}
+		}
+		
+		//Finds the best card of that suit
+		for (int i = index; i < hand.size(); i++) {
+			if (hand.get(i).getSuit() == current
+					&& hand.get(i).getValue() > c.getValue()) {
+				c = hand.get(i);
+				index = i;
+				break;
+			}
+		}
+		
+		if (c.getSuit() != current) {
+			for (int i = index; i < hand.size(); i++) {
+				if (hand.get(i).getSuit() == trump) {
+					
+				}
+			}
 		}
 	}
 }
