@@ -173,14 +173,14 @@ public class EuchreGUI extends JFrame {
 		} else { // someone else is the dealer
 			for (int i = game.getDealerIndex(); i < 4; i++) {
 				if (game.dealerCard(i)) {
-					alertLabel = new JLabel("<html>You're not the dealer!"
+					alertLabel = new JLabel("<html>You're not the dealer."
 							+ "<br>Player " + i + " chose trump to be "
 							+ game.getTrump().name() + "</html>");
 					trumpLabel.setText("Trump is: " + game.getTrump().name());
 					break;
 				}
 			}
-			alertLabel = new JLabel("<html>You're not the dealer!"
+			alertLabel = new JLabel("<html>You're not the dealer."
 					+ "<br> Player " + game.getDealerIndex() + " is the dealer"
 					+ "<br>Choose if you want the dealer to pickup"
 					+ "<br>the card</html>");
@@ -194,7 +194,8 @@ public class EuchreGUI extends JFrame {
 
 
 	/**
-	 * 
+	 * Sets up the the frame, adding in all components. Also initializes 
+	 * componenets. 
 	 */
 	private void initDisplay() {
 		this.setLayout(new BorderLayout());
@@ -305,7 +306,7 @@ public class EuchreGUI extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Refreshes the display to show the current game state.
 	 */
 	private void update() {
 
@@ -331,7 +332,8 @@ public class EuchreGUI extends JFrame {
 
 
 	/**
-	 * 
+	 * Formats a JButton to not be java styled, but just be a clickable
+	 * imageIcon
 	 * @param b The button to be formatted.
 	 * @return A properly formatted button to look like a plain image.
 	 */
@@ -350,9 +352,10 @@ public class EuchreGUI extends JFrame {
 
 
 	/**
-	 * 
+	 * With the given Card, find the correct image in the directory
+	 * resources/cards/.
 	 * @param c The given card.
-	 * @return A JLabel with an image of the card corresponding to the given
+	 * @return An ImageIcon of the card corresponding to the given
 	 * card c.
 	 */
 	private ImageIcon cardGraphic(final Card c) {
@@ -399,7 +402,6 @@ public class EuchreGUI extends JFrame {
 
 
 	/**
-	 * 
 	 * @return A formatted String containing overall and round score
 	 * data
 	 */
@@ -546,8 +548,11 @@ public class EuchreGUI extends JFrame {
 
 	}
 
-
-	public static void main(String[] args) {
+	/**
+	 * Creates a EuchreGUI object to start the game.
+	 * @param args System arguments.
+	 */
+	public static void main(final String[] args) {
 		new EuchreGUI();
 
 		//		EuchreGame game = new EuchreGame();
