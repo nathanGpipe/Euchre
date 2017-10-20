@@ -467,13 +467,13 @@ public class EuchreGUI extends JFrame {
 				//tell the dealer to pickup the card
 				} else if (e.getSource().equals(pickupButton) 
 						&& game.getDealerIndex() != 0) {
+					game.setTrump(game.getTopCard().getSuit());
 					System.out.println("picked up");
 					game.getPlayers()[game.getDealerIndex()]
 							.swap(game.getTopCard());
 					
 					
 					passButton.setEnabled(false);
-					game.setTrump(game.getTopCard().getSuit());
 					trumpLabel.setText("Trump is: " 
 							+ game.getTrump().name());
 
@@ -502,6 +502,7 @@ public class EuchreGUI extends JFrame {
 								trumpLabel.setText("Trump is: " 
 										+ game.getTrump().name());
 								//passButton.setEnabled(false);
+								break;
 							}
 						}
 					}

@@ -1,8 +1,8 @@
 package game;
 
 /**
+ * A class containing data for a game card.
  * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
- * Class for 
  */
 
 public class Card implements Comparable<Card> {

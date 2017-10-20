@@ -6,8 +6,8 @@ import java.util.Collections;
 //import javax.smartcardio.Card;
 
 /**
- * 
- * @author 
+ * Manages a deck of cards.
+ * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
  *
  */
 public class Deck {

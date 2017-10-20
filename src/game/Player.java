@@ -3,8 +3,8 @@ package game;
 import java.util.ArrayList;
 
 /**
- * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford Class to store data
- *         pertaining to each player.
+ * Class to store data pertaining to each player.
+ * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford 
  */
 public class Player {
 
