@@ -441,7 +441,7 @@ public class EuchreGUI extends JFrame {
 		}
 		alertLabel.setText("Play a card");
 
-		update();
+		//update();
 	}
 
 	/**
