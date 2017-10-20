@@ -148,6 +148,7 @@ public class EuchreGame {
 	 */
 	public void makePlay(final int index) {
 		if (cardsPlayed.size() >= 4) {
+			System.out.println(cardsPlayed.size());
 			throw new IllegalStateException();
 		}
 		Card play = players[index].choosePlay(cardsPlayed, trump);
@@ -346,7 +347,11 @@ public class EuchreGame {
 		// two cards to each player
 		for (int j = 0; j < 4; j++) { 
 			// goes through all four players
-			curDeal = curDeal++;
+			curDeal++;
+			if(curDeal >= 4) {
+				curDeal -= 4;
+			}
+			//System.out.println(curDeal);
 			players[curDeal].addToHand(cardDeck.deal());
 			players[curDeal].addToHand(cardDeck.deal());
 		}
@@ -354,7 +359,10 @@ public class EuchreGame {
 		// three cards to each player
 		for (int j = 0; j < 4; j++) {
 			// goes through all four players
-			curDeal = curDeal++;
+			curDeal++;
+			if(curDeal >= 4) {
+				curDeal -= 4;
+			}
 			players[curDeal].addToHand(cardDeck.deal());
 			players[curDeal].addToHand(cardDeck.deal());
 			players[curDeal].addToHand(cardDeck.deal());

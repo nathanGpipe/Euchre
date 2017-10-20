@@ -57,7 +57,8 @@ public class Player {
 	 *            The card on top of the discard pile.
 	 */
 	public void swap(final Card c) {
-		
+		hand.remove(0);
+		hand.add(c);
 	}
 
 	/**
