@@ -291,8 +291,58 @@ public class PlayerTest {
 	 * Test method for choosePlay().
 	 */
 	@Test
-	public void testChoosePlay() {
-		fail("Not yet implemented");
+	public void testChoosePlay1() {
+		Player p1 = new Player();
+		p1.addToHand(h2);
+		p1.addToHand(h3);
+		p1.addToHand(c1);
+		p1.addToHand(c4);
+		p1.addToHand(d1);
+		
+		ArrayList<Card> table = new ArrayList<Card>();
+		table.add(h1);
+		Suit trump = Suit.SPADES;
+		
+		
+		
+		assertEquals(h3, p1.choosePlay(table, trump));
+	}
+	
+	/**
+	 * Test method for choosePlay().
+	 */
+	@Test
+	public void testChoosePlay2() {
+		Player p1 = new Player();
+		p1.addToHand(h3);
+		p1.addToHand(h2);
+		p1.addToHand(c1);
+		p1.addToHand(c4);
+		p1.addToHand(d1);
+		
+		ArrayList<Card> table = new ArrayList<Card>();
+		table.add(s1);
+		Suit trump = Suit.HEARTS;
+		
+		assertEquals(h2, p1.choosePlay(table, trump));
+	}
+	
+	/**
+	 * Test method for choosePlay().
+	 */
+	@Test
+	public void testChoosePlay3() {
+		Player p1 = new Player();
+		p1.addToHand(h3);
+		p1.addToHand(h2);
+		p1.addToHand(c1);
+		p1.addToHand(c4);
+		p1.addToHand(d1);
+		
+		ArrayList<Card> table = new ArrayList<Card>();
+		Suit trump = Suit.HEARTS;
+		
+		assertEquals(c4, p1.choosePlay(table, trump));
 	}
 
 	/**

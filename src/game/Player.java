@@ -3,8 +3,8 @@ package game;
 import java.util.ArrayList;
 
 /**
- * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford 
- * Class to store data pertaining to each player.
+ * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford Class to store data
+ *         pertaining to each player.
  */
 public class Player {
 
@@ -39,7 +39,8 @@ public class Player {
 	/**
 	 * Chooses whether or not to have the dealer pick up the initial card.
 	 * 
-	 * @param c The card to check for the dealer to pick up.
+	 * @param c
+	 *            The card to check for the dealer to pick up.
 	 * @return True if the player wants them to pick it up.
 	 */
 	public boolean pickUp(final Card c) {
@@ -50,8 +51,8 @@ public class Player {
 	}
 
 	/**
-	 * Swaps the card on the top of the discard pile with 
-	 * one in the player's hand.
+	 * Swaps the card on the top of the discard pile with one in the player's
+	 * hand.
 	 * 
 	 * @param c
 	 *            The card on top of the discard pile.
@@ -71,19 +72,13 @@ public class Player {
 	 * @return A card from the player's hand that they choose to play.
 	 */
 	public Card choosePlay(final ArrayList<Card> table, final Suit trump) {
+
 		if (table.size() == 0) {
-			//high off suit
+			return hand.remove(leadTurn(trump));
+		} else {
+			Suit follow = table.get(0).getSuit();
+			return hand.remove(followSuit(follow, trump));
 		}
-		if (table.size() == 1 ) {
-			
-		}
-		if (table.size() == 2) {
-			
-		}
-		if (table.size() == 3) {
-			
-		}
-		return hand.remove(index);
 	}
 
 	/**
@@ -106,8 +101,9 @@ public class Player {
 	}
 
 	/**
-	 * Sets the partner for this player and sets the partner for 
-	 * the Player in the parameter's partner to this Player.
+	 * Sets the partner for this player and sets the partner for the Player in
+	 * the parameter's partner to this Player.
+	 * 
 	 * @param p
 	 *            The partner of the player.
 	 */
@@ -124,9 +120,10 @@ public class Player {
 	public Player getPartner() {
 		return partner;
 	}
-	
+
 	/**
 	 * Private helper method to assist in AI functions.
+	 * 
 	 * @return the preferred suit, given the player's hand
 	 */
 	private Suit getFavoriteSuit() {
@@ -189,22 +186,20 @@ public class Player {
 			return null;
 		}
 	}
-	
+
 	/**
-	 *Looks at the player's hand and find's the lowest off-suit card it can.
-	 * @param trump 
-	 * 			The current trump suit.
+	 * Looks at the player's hand and find's the lowest off-suit card it can.
+	 * 
+	 * @param trump
+	 *            The current trump suit.
 	 * @return The index of the Player's worst card
 	 */
 	private int getWorstCard(final Suit trump) {
 		Card current = hand.get(0);
 		int index = 0;
 		for (int i = 1; i < hand.size(); i++) {
-			if (hand.get(i).getSuit() != trump 
-					|| current.getSuit() == trump) {
-				if (hand.get(i).getValue()
-						< current.getValue()
-						|| current.getSuit() == trump) {
+			if (hand.get(i).getSuit() != trump || current.getSuit() == trump) {
+				if (hand.get(i).getValue() < current.getValue() || current.getSuit() == trump) {
 					current = hand.get(i);
 					index = i;
 				}
@@ -212,37 +207,41 @@ public class Player {
 		}
 		return index;
 	}
-	
+
 	/**
 	 * Player chooses their highest off-suit card.
-	 * @param trump The current trump suit.
+	 * 
+	 * @param trump
+	 *            The current trump suit.
 	 * @return The index of the card to lead the turn with.
 	 */
-	private int leadTurn(Suit trump) {
+	private int leadTurn(final Suit trump) {
 		Card current = hand.get(0);
 		int index = 0;
 		for (int i = 1; i < hand.size(); i++) {
-			if (hand.get(i).getSuit() != trump 
-					&& hand.get(i).getValue() > current.getValue()) {
+			if (hand.get(i).getSuit() != trump && hand.get(i).getValue() > current.getValue()) {
 				current = hand.get(i);
 				index = i;
 			}
 		}
 		return index;
 	}
-	
+
 	/**
-	 * Player chooses their best card of the current suit
-	 * or throws their lowest trump card.
-	 * @param current The suit that the turn was lead with.
-	 * @param trump The current trump suit.
+	 * Player chooses their best card of the current suit or throws their lowest
+	 * trump card.
+	 * 
+	 * @param current
+	 *            The suit that the turn was lead with.
+	 * @param trump
+	 *            The current trump suit.
 	 * @return The index of card to play.
 	 */
-	private int followSuit(Suit current, Suit trump) {
+	private int followSuit(final Suit current, final Suit trump) {
 		Card c = hand.get(0);
 		int index = 0;
-		
-		//Finds a card to follow with
+
+		// Finds a card to follow with
 		for (int i = 0; i < hand.size(); i++) {
 			if (hand.get(i).getSuit() == current) {
 				c = hand.get(i);
@@ -250,23 +249,38 @@ public class Player {
 				break;
 			}
 		}
-		
-		//Finds the best card of that suit
+
+		// Finds the best card of that suit to play
 		for (int i = index; i < hand.size(); i++) {
-			if (hand.get(i).getSuit() == current
-					&& hand.get(i).getValue() > c.getValue()) {
+			if (hand.get(i).getSuit() == current 
+					&& hand.get(i).getValue() 
+					> c.getValue()) {
 				c = hand.get(i);
 				index = i;
 				break;
 			}
 		}
-		
+
+		// If it can't follow suit then it plays a trump card
 		if (c.getSuit() != current) {
 			for (int i = index; i < hand.size(); i++) {
 				if (hand.get(i).getSuit() == trump) {
-					
+					c = hand.get(i);
+					index = i;
+					break;
+				}
+			}
+			
+			// It looks for its lowest trump card to play
+			for (int i = index; i < hand.size(); i++) {
+				if (hand.get(i).getSuit() == trump 
+						&& hand.get(i).getValue() 
+						< c.getValue()) {
+					c = hand.get(i);
+					index = i;
 				}
 			}
 		}
+		return index;
 	}
 }
