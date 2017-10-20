@@ -51,7 +51,7 @@ public class Player {
 	}
 
 	/**
-	 * Swaps the card on the top of the discard pile with one in the player's
+	 * Swaps the card on top of the discard pile with one in the player's
 	 * hand.
 	 * 
 	 * @param c
@@ -101,7 +101,7 @@ public class Player {
 	}
 
 	/**
-	 * Sets the partner for this player and sets the partner for the Player in
+	 * Sets the partner for this player and the partner for the Player in
 	 * the parameter's partner to this Player.
 	 * 
 	 * @param p
@@ -126,7 +126,7 @@ public class Player {
 	 * 
 	 * @return the preferred suit, given the player's hand
 	 */
-	private Suit getFavoriteSuit() {
+	public Suit getFavoriteSuit() {
 		int numClubs = 0;
 		int numSpades = 0;
 		int numDiamonds = 0;
@@ -188,7 +188,7 @@ public class Player {
 	}
 
 	/**
-	 * Looks at the player's hand and find's the lowest off-suit card it can.
+	 * Looks at the player's hand and finds the lowest off-suit card it can.
 	 * 
 	 * @param trump
 	 *            The current trump suit.
@@ -198,8 +198,10 @@ public class Player {
 		Card current = hand.get(0);
 		int index = 0;
 		for (int i = 1; i < hand.size(); i++) {
-			if (hand.get(i).getSuit() != trump || current.getSuit() == trump) {
-				if (hand.get(i).getValue() < current.getValue() || current.getSuit() == trump) {
+			if (hand.get(i).getSuit() != trump 
+					|| current.getSuit() == trump) {
+				if (hand.get(i).getValue() < current.getValue() 
+						|| current.getSuit() == trump) {
 					current = hand.get(i);
 					index = i;
 				}
@@ -219,7 +221,9 @@ public class Player {
 		Card current = hand.get(0);
 		int index = 0;
 		for (int i = 1; i < hand.size(); i++) {
-			if (hand.get(i).getSuit() != trump && hand.get(i).getValue() > current.getValue()) {
+			if (hand.get(i).getSuit() != trump 
+					&& hand.get(i).getValue() 
+					> current.getValue()) {
 				current = hand.get(i);
 				index = i;
 			}
@@ -228,8 +232,8 @@ public class Player {
 	}
 
 	/**
-	 * Player chooses their best card of the current suit or throws their lowest
-	 * trump card.
+	 * Player chooses their best card of the 
+	 * current suit or throws their lowest trump card.
 	 * 
 	 * @param current
 	 *            The suit that the turn was lead with.

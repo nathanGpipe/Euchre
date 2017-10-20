@@ -48,6 +48,23 @@ public class DeckTest {
 	}
 	
 	/**
+	 * Tests resetDeck() to make sure
+	 * that the cards dealt were put
+	 * back in the deck.
+	 */
+	@Test
+	public void testResetDeck() {
+		Deck d = new Deck();
+		Card a = d.discard(d.getCards().get(0));
+		Card b = d.discard(d.getCards().get(1));
+		Card c = d.discard(d.getCards().get(2));
+		d.resetDeck();
+		assertTrue(d.getCards().contains(a));
+		assertTrue(d.getCards().contains(b));
+		assertTrue(d.getCards().contains(c));
+	}
+	
+	/**
 	 * Tests the to see if deal() returns the first card in the deck.
 	 */
 	@Test
