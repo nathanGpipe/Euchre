@@ -164,7 +164,7 @@ public class EuchreGUI extends JFrame {
 		playerPick = false;
 
 		initDisplay();
-		game.startGame();
+		game.startRound();
 		alertLabel = new JLabel();
 		infoPanel.add(alertLabel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -432,10 +432,11 @@ public class EuchreGUI extends JFrame {
 			try {
 				System.out.println("event");
 				if (e.getSource().equals(startButton)) {
-					game.startGame();
+					game.startRound();
 				}
 
 				if (e.getSource().equals(pickupButton)) {
+					passButton.setEnabled(false);
 					if (game.getGameState() == GameState.DEALERSTOPCARD) {
 						// player told dealer to pick up top card
 						game.dealerSwap();
@@ -447,6 +448,7 @@ public class EuchreGUI extends JFrame {
 				}
 
 				if (e.getSource().equals(passButton)) {
+					passButton.setEnabled(false);
 					if (game.getGameState() == GameState.DEALERSTOPCARD) {
 						// player did not want dealer to pick up top card
 						game.finishTopCardChoice();
@@ -462,6 +464,13 @@ public class EuchreGUI extends JFrame {
 						if (game.getGameState() == GameState.PLAYERSWAP) {
 							game.getPlayers()[0].swap(game.getTopCard(),
 									game.getPlayers()[0].getHand().get(i));
+						}
+						
+						if (game.getGameState() == GameState.TRICK) {
+							game.playerPlay(i);
+							playerCards.get(0).remove(i);
+							cardsPanel.remove(i);
+							game.trickAfter();
 						}
 					}
 				}

@@ -34,7 +34,7 @@ public enum GameState {
 	PLAYERSWAP,
 	
 	/**
-	 * The game needs to go through a round of deciding trump
+	 * The game needs to go through a round of deciding trump.
 	 */
 	TRUMPCHOICE,
 	
@@ -42,5 +42,21 @@ public enum GameState {
 	 * The trump is chosen and it is time for the round
 	 * to be played.
 	 */
-	ROUND
+	TRICK,
+	
+	/**
+	 * Five tricks have been played and the round needs to
+	 * be reset.
+	 */
+	ROUNDEND,
+	
+	/**
+	 * Team 1 has won the game.
+	 */
+	TEAM1WIN,
+	
+	/**
+	 * Team 2 has won the game.
+	 */
+	TEAM2WIN
 }

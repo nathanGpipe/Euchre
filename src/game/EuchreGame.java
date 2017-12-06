@@ -65,9 +65,14 @@ public class EuchreGame {
 	private int winState;
 	
 	/**
-	 * State of the game
+	 * State of the game.
 	 */
 	private GameState gameState;
+	
+	/**
+	 * Player that started the current trick.
+	 */
+	private int trickStart;
 	
 	//TODO: Get your shit together
 
@@ -95,6 +100,7 @@ public class EuchreGame {
 		cardsPlayed = new ArrayList<Card>(4);
 
 		trump = null;
+		trickStart = 0;
 
 		winState = 0;
 
@@ -110,7 +116,7 @@ public class EuchreGame {
 	/**
 	 * Handles the beginning state of the game.
 	 */
-	public void startGame() {
+	public void startRound() {
 		if (getDealerIndex() == 0) {
 			// the player is the dealer
 			if (!dealerCard(1)) {
@@ -130,7 +136,13 @@ public class EuchreGame {
 			// an AI is the dealer
 			for (int i = dealerIndex + 1; i < 4; i++) {
 				if (dealerCard(i)) {
-					gameState = GameState.ROUND;
+					gameState = GameState.TRICK;
+					if (dealerIndex == 3) {
+						trickStart = 0;
+					} else {
+						trickStart = dealerIndex + 1;
+					}
+					trickBefore();
 					return;
 				}
 			}
@@ -152,7 +164,13 @@ public class EuchreGame {
 		} else {
 			for (int i = 1; i < dealerIndex + 1; i++) {
 				if (dealerCard(i)) {
-					gameState = GameState.ROUND;
+					gameState = GameState.TRICK;
+					if (dealerIndex == 3) {
+						trickStart = 0;
+					} else {
+						trickStart = dealerIndex + 1;
+					}
+					trickBefore();
 					return;
 				}
 			}
@@ -168,7 +186,13 @@ public class EuchreGame {
 	public void trumpRound() {
 		for (int i = dealerIndex + 1; i < 4; i++) {
 			if (chooseTrump(i)) {
-				gameState = GameState.ROUND;
+				gameState = GameState.TRICK;
+				if (dealerIndex == 3) {
+					trickStart = 0;
+				} else {
+					trickStart = dealerIndex + 1;
+				}
+				trickBefore();
 				return;
 			}
 		}
@@ -182,11 +206,71 @@ public class EuchreGame {
 	public void finishTrumpRound() {
 		for (int i = 1; i < dealerIndex + 1; i++) {
 			if (chooseTrump(i)) {
-				gameState = GameState.ROUND;
+				gameState = GameState.TRICK;
+				if (dealerIndex == 3) {
+					trickStart = 0;
+				} else {
+					trickStart = dealerIndex + 1;
+				}
+				trickBefore();
 				return;
 			}
 		}
-		gameState = GameState.ROUND;
+		gameState = GameState.TRICK;
+		if (dealerIndex == 3) {
+			trickStart = 0;
+		} else {
+			trickStart = dealerIndex + 1;
+		}
+		trickBefore();
+	}
+	
+	/**
+	 * This method goes through the AI playing before the
+	 * player in a trick.
+	 */
+	public void trickBefore() {
+		for (int i = trickStart; i < 4; i++) {
+			makePlay(i);
+		}
+		gameState = GameState.TRICK;
+	}
+	
+	/**
+	 * This method cycles through the remaining AI for a
+	 * trick.
+	 */
+	public void trickAfter() {
+		for (int i = 1; i < trickStart; i++) {
+			makePlay(i);
+		}
+		trickStart = checkWin();
+		cardsPlayed.clear();
+		if (gameState == GameState.ROUNDEND) {
+			cardDeck.resetDeck();
+			deal();
+			dealerIndex++;
+			if (dealerIndex == 4) {
+				dealerIndex = 0;
+			}
+			if (dealerIndex == 3) {
+				trickStart = 0;
+			} else {
+				trickStart = dealerIndex + 1;
+			}
+			startRound();
+		} else {
+			trickBefore();
+		}
+	}
+	
+	/**
+	 * This method removes a card from the player's hand
+	 * and puts it on the table.
+	 * @param cardIndex the card to move in the hand.
+	 */
+	public void playerPlay(final int cardIndex) {
+		cardsPlayed.add(players[0].getHand().remove(cardIndex));
 	}
 
 	/**
@@ -237,11 +321,6 @@ public class EuchreGame {
 		}
 		return false;
 	}
-
-	
-	public void startRound() {
-		
-	}
 	
 	/**
 	 * This method asks the player of the given index to play a card
@@ -279,19 +358,19 @@ public class EuchreGame {
 	 * This method checks the four cards on the table to determine which
 	 * player won the round. It then updates the point totals  for the
 	 * round.
+	 * @return The index of the player that won the round.
 	 */
-	public void checkWin() {
+	public int checkWin() {
 		if (cardsPlayed.size() < 4) {
 			throw new IllegalStateException();
 		} else if (cardsPlayed.size() > 4) {
 			throw new IllegalArgumentException();
 		}
-
+		int returnIndex = -1;
 		// keeps track of what players played trump cards
 		ArrayList<Integer> trumpIndexes = new ArrayList<Integer>();
 		// keeps track of the trump cards
 		ArrayList<Card> trumpCards = new ArrayList<Card>();
-
 		for (int i = 0; i < 4; i++) { // counts number of trump cards
 			if (cardsPlayed.get(i).getSuit() == trump) {
 				trumpIndexes.add((i + 1 + dealerIndex) % 4); 
@@ -306,7 +385,6 @@ public class EuchreGame {
 				trumpCards.add(cardsPlayed.get(i));
 			}
 		}
-
 		if (trumpIndexes.size() == 0) { 
 			// no trump cards, check for initial suit
 			Suit main = cardsPlayed.get(0).getSuit();
@@ -330,6 +408,7 @@ public class EuchreGame {
 				} else {
 					team2points++;
 				}
+				returnIndex = trumpIndexes.get(0);
 			} else {
 				int maxValue = 0;
 				int maxIndex = 0;
@@ -347,6 +426,7 @@ public class EuchreGame {
 				} else {
 					team2points++;
 				}
+				returnIndex = trumpIndexes.get(maxIndex);
 			}
 		} else if (trumpIndexes.size() == 1) {
 			// one trump card, it automatically wins
@@ -356,6 +436,7 @@ public class EuchreGame {
 			} else {
 				team2points++;
 			}
+			returnIndex = trumpIndexes.get(0);
 		} else {
 			boolean found = false;
 			for (int i = 0; i < trumpCards.size(); i++) {
@@ -371,6 +452,7 @@ public class EuchreGame {
 						team2points++;
 					}
 					found = true;
+					returnIndex = trumpIndexes.get(i);
 				}
 			}
 			if (!found) {
@@ -387,6 +469,7 @@ public class EuchreGame {
 							team2points++;
 						}
 						found = true;
+						returnIndex = trumpIndexes.get(i);
 					}
 				}
 				if (!found) {
@@ -410,36 +493,38 @@ public class EuchreGame {
 					} else {
 						team2points++;
 					}
+					returnIndex = trumpIndexes.get(maxIndex);
 				}
 			}
 		}
-
 		if ((team1points + team2points) == 5) {
 			if (team1points > team2points) {
 				team1score++;
 			} else {
 				team2score++;
 			}
-			checkGameWin();
 			team1points = 0;
 			team2points = 0;
-			cardDeck.resetDeck();
-			dealerIndex++;
-			if (dealerIndex == 4) {
-				dealerIndex = 0;
+			if (!checkGameWin()) {
+				gameState = GameState.ROUNDEND;
 			}
 		}
+		return returnIndex;
 	}
 
 	/**
 	 * Checks if either team has won the game.
+	 * @return True if a team has won.
 	 */
-	private void checkGameWin() {
+	private boolean checkGameWin() {
 		if (team1score >= 10) {
-			winState = 1;
+			gameState = GameState.TEAM1WIN;
+			return true;
 		} else if (team2score >= 10) {
-			winState = 2;
+			gameState = GameState.TEAM2WIN;
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -631,6 +716,24 @@ public class EuchreGame {
 	 */
 	public void setGameState(final GameState gameState) {
 		this.gameState = gameState;
+	}
+
+	/**
+	 * Returns the player that started the current
+	 * trick.
+	 * @return The index of the player that started
+	 * the current trick.
+	 */
+	public int getTrickStart() {
+		return trickStart;
+	}
+
+	/**
+	 * Sets the player that started the current trick.
+	 * @param trickStart The index of the player to set.
+	 */
+	public void setTrickStart(final int trickStart) {
+		this.trickStart = trickStart;
 	}
 
 }
