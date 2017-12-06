@@ -62,7 +62,14 @@ public class EuchreGame {
 	/**
 	 * 0 - Playing, 1 - Team 1 Wins, 2 - Team 2 wins.
 	 */
-	private int gameState;
+	private int winState;
+	
+	/**
+	 * State of the game
+	 */
+	private GameState gameState;
+	
+	//TODO: Get your shit together
 
 	/**
 	 * Runs the Euchre game.
@@ -81,6 +88,7 @@ public class EuchreGame {
 
 		team1score = 0;
 		team2score = 0;
+		gameState = GameState.BEGINNINGPHASE;
 
 		dealerIndex = (int) (Math.random() * 4);
 
@@ -88,7 +96,7 @@ public class EuchreGame {
 
 		trump = null;
 
-		gameState = 0;
+		winState = 0;
 
 		//		while (team1score < 10 || team2score < 10) {
 		//			//trick();
@@ -97,6 +105,88 @@ public class EuchreGame {
 		//				dealerIndex = 0;
 		//			}
 		//		}
+	}
+	
+	/**
+	 * Handles the beginning state of the game.
+	 */
+	public void startGame() {
+		if (getDealerIndex() == 0) {
+			// the player is the dealer
+			if (!dealerCard(1)) {
+				if (!dealerCard(2)) {
+					if (!dealerCard(3)) {
+						// none of the AI wanted the dealer
+						// to pick up the top card
+						gameState = GameState.PLAYERSTOPCARD;
+						return;
+					}
+				}
+			}
+			// the AI wanted the player to pick up the card
+			gameState = GameState.PLAYERSWAP;
+			return;
+		} else { 
+			// an AI is the dealer
+			for (int i = dealerIndex + 1; i < 4; i++) {
+				if (dealerCard(i)) {
+					gameState = GameState.ROUND;
+					return;
+				}
+			}
+			// the player needs to decide if the dealer should
+			// pick up the top card or not
+			gameState = GameState.DEALERSTOPCARD;
+			return;
+		}
+		
+	}
+	
+	/**
+	 * This method cycles through the remaining AI to decide
+	 * whether or not to pick up the top card.
+	 */
+	public void finishTopCardChoice() {
+		if (dealerIndex == 0) {
+			return;
+		} else {
+			for (int i = 1; i < dealerIndex + 1; i++) {
+				if (dealerCard(i)) {
+					gameState = GameState.ROUND;
+					return;
+				}
+			}
+			gameState = GameState.TRUMPCHOICE;
+			trumpRound();
+		}
+	}
+	
+	/**
+	 * This method goes through the AI until the
+	 * player to choose trump.
+	 */
+	public void trumpRound() {
+		for (int i = dealerIndex + 1; i < 4; i++) {
+			if (chooseTrump(i)) {
+				gameState = GameState.ROUND;
+				return;
+			}
+		}
+		gameState = GameState.PLAYERSUIT;
+	}
+	
+	/**
+	 * This method cycles through the remaining AI to decide
+	 * whether or not to choose trump.
+	 */
+	public void finishTrumpRound() {
+		for (int i = 1; i < dealerIndex + 1; i++) {
+			if (chooseTrump(i)) {
+				gameState = GameState.ROUND;
+				return;
+			}
+		}
+		gameState = GameState.ROUND;
 	}
 
 	/**
@@ -123,6 +213,14 @@ public class EuchreGame {
 		}
 		return false;
 	}
+	
+	/**
+	 * This method swaps the top card into the dealer's hand.
+	 */
+	public void dealerSwap() {
+		players[dealerIndex].swap(topCard);
+	}
+
 
 	/**
 	 * This method asks the player of the given index whether or not
@@ -140,6 +238,11 @@ public class EuchreGame {
 		return false;
 	}
 
+	
+	public void startRound() {
+		
+	}
+	
 	/**
 	 * This method asks the player of the given index to play a card
 	 * from their hand.
@@ -333,9 +436,9 @@ public class EuchreGame {
 	 */
 	private void checkGameWin() {
 		if (team1score >= 10) {
-			gameState = 1;
+			winState = 1;
 		} else if (team2score >= 10) {
-			gameState = 2;
+			winState = 2;
 		}
 	}
 
@@ -494,8 +597,8 @@ public class EuchreGame {
 	 * Returns the state of the game.
 	 * @return The state of the game
 	 */
-	public int getGameState() {
-		return gameState;
+	public int getWinState() {
+		return winState;
 	}
 
 	/**
@@ -512,6 +615,22 @@ public class EuchreGame {
 	 */
 	public void setTopCard(final Card topCard) {
 		this.topCard = topCard;
+	}
+
+	/**
+	 * Returns the state of the game.
+	 * @return The state of the game.
+	 */
+	public GameState getGameState() {
+		return gameState;
+	}
+
+	/**
+	 * Sets the state of the game.
+	 * @param gameState The state of the game.
+	 */
+	public void setGameState(final GameState gameState) {
+		this.gameState = gameState;
 	}
 
 }

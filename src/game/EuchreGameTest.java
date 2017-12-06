@@ -39,11 +39,6 @@ public class EuchreGameTest {
 		EuchreGame g = new EuchreGame();
 		g.setDealerIndex(1);
 		g.deal();
-		while (g.getPlayers()[1].getFavoriteSuit() == null) {
-			g = new EuchreGame();
-			g.setDealerIndex(1);
-			g.deal();
-		}
 		Card c = new Card("Jack of Hearts", 
 				11, g.getPlayers()[1].getFavoriteSuit());
 		g.setTopCard(c);
@@ -60,11 +55,6 @@ public class EuchreGameTest {
 	public void testDealerCard3() {
 		EuchreGame g = new EuchreGame();
 		g.deal();
-		while (g.getPlayers()[1].getFavoriteSuit() == null) {
-			g = new EuchreGame();
-			g.setDealerIndex(1);
-			g.deal();
-		}
 		Card c;
 		if (g.getPlayers()[1].getFavoriteSuit() == Suit.HEARTS) {
 			c = new Card("Jack of Hearts", 
@@ -125,23 +115,24 @@ public class EuchreGameTest {
 		g.makePlay(1);
 	}
 	
-//	/**
-//	 * Tests that a card is added
-//	 * to cardsPlayed after makePlay
-//	 * is called.
-//	 */
-//	@Test
-//	public void testMakePlay2() {
-//		EuchreGame g = new EuchreGame();
-//		ArrayList<Card> cList = new ArrayList<Card>();
-//		for (int i = 0; i < 2; i++) {
-//			Card c = new Card("", 0, Suit.HEARTS);
-//			cList.add(c);
-//		}
-//		g.setCardsPlayed(cList);
-//		g.makePlay(1);
-//		assertTrue(g.getCardsPlayed().size() == 3);
-//	}
+	/**
+	 * Tests that a card is added
+	 * to cardsPlayed after makePlay
+	 * is called.
+	 */
+	@Test
+	public void testMakePlay2() {
+		EuchreGame g = new EuchreGame();
+		g.deal();
+		ArrayList<Card> cList = new ArrayList<Card>();
+		for (int i = 0; i < 2; i++) {
+			Card c = new Card("", 0, Suit.HEARTS);
+			cList.add(c);
+		}
+		g.setCardsPlayed(cList);
+		g.makePlay(1);
+		assertTrue(g.getCardsPlayed().size() == 3);
+	}
 	
 	/**
 	 * This test checks that an error
@@ -776,7 +767,7 @@ public class EuchreGameTest {
 		
 		g.setCardsPlayed(cList);
 		g.checkWin();
-		assertTrue(g.getGameState() == 1);
+		assertTrue(g.getWinState() == 1);
 	}
 	
 	/**
@@ -805,6 +796,6 @@ public class EuchreGameTest {
 		
 		g.setCardsPlayed(cList);
 		g.checkWin();
-		assertTrue(g.getGameState() == 2);
+		assertTrue(g.getWinState() == 2);
 	}
 }

@@ -61,6 +61,18 @@ public class Player {
 		hand.remove(getWorstCard(c.getSuit()));
 		addToHand(c);
 	}
+	
+	/**
+	 * Swaps the card on top of the discard pile with one in the player's
+	 * hand.
+	 * 
+	 * @param add The card to add to the hand.
+	 * @param rem The card to remove from the hand.
+	 */
+	public void swap(final Card add, final Card rem) {
+		hand.remove(rem);
+		addToHand(add);
+	}
 
 	/**
 	 * Looks at what cards are on the table and chooses which card to play.
@@ -72,9 +84,12 @@ public class Player {
 	 * @return A card from the player's hand that they choose to play.
 	 */
 	public Card choosePlay(final ArrayList<Card> table, final Suit trump) {
-
 		if (table.size() == 0) {
-			return hand.remove(leadTurn(trump));
+			if (hand.size() != 0) {
+				return hand.remove(leadTurn(trump));
+			} else {
+				return null;
+			}
 		} else {
 			Suit follow = table.get(0).getSuit();
 			return hand.remove(followSuit(follow, trump));
@@ -213,8 +228,7 @@ public class Player {
 	/**
 	 * Player chooses their highest off-suit card.
 	 * 
-	 * @param trump
-	 *            The current trump suit.
+	 * @param trump The current trump suit.
 	 * @return The index of the card to lead the turn with.
 	 */
 	private int leadTurn(final Suit trump) {
