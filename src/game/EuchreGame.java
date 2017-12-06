@@ -245,6 +245,12 @@ public class EuchreGame {
 			makePlay(i);
 		}
 		trickStart = checkWin();
+	}
+	
+	/**
+	 * Handles trick and round ends and turnovers.
+	 */
+	public void trickReset() {
 		cardsPlayed.clear();
 		if (gameState == GameState.ROUNDEND) {
 			cardDeck.resetDeck();

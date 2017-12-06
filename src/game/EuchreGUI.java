@@ -129,26 +129,6 @@ public class EuchreGUI extends JFrame {
 	 */
 	private JLabel trumpLabel;
 
-
-	/**
-	 * Denotes that the game is in the phase of choosing trump.
-	 */
-	private boolean beginningPhase;
-
-	/**
-	 * Denotes that the player needs to decide whether or not
-	 * to pick up the top card.
-	 */
-	private boolean playerPick;
-
-
-	/**
-	 * Flags if the round has been completed, if so check the scores and reset
-	 * the table.
-	 */
-	private boolean roundFinished;
-
-
 	/**
 	 * Initializes variables, and handles the beginning state of the game.
 	 */
@@ -160,8 +140,6 @@ public class EuchreGUI extends JFrame {
 		tableCards = new ArrayList<JButton>(4);
 		eventListener = new EventListener();
 		//clickListener = new ClickListener();
-
-		playerPick = false;
 
 		initDisplay();
 		game.startRound();
@@ -307,10 +285,22 @@ public class EuchreGUI extends JFrame {
 
 		// re-render components with changed imageicons
 		SwingUtilities.updateComponentTreeUI(this);
-
-		if (!roundFinished) {
-			trick();
+		
+		if (game.getGameState() == GameState.PLAYERSTOPCARD) {
+			alertLabel.setText("Do you want to pick up the top card?");
+		} else if (game.getGameState() == GameState.DEALERSTOPCARD) {
+			alertLabel.setText("Would you like the dealer (Player " 
+					+ game.getDealerIndex() 
+					+ ") to pick up the top card?");
+		} else if (game.getGameState() == GameState.PLAYERSWAP) {
+			alertLabel.setText("Pick a card to swap from your hand.");
+		} else if (game.getGameState() == GameState.TRICK) {
+			alertLabel.setText("Play a card");
 		}
+//
+//		if (!roundFinished) {
+//			trick();
+//		}
 	}
 
 
@@ -405,20 +395,19 @@ public class EuchreGUI extends JFrame {
 	 * Has the AI's before the player make their plays, then prompts the
 	 * player to play a card.
 	 */
-	private void trick() {
-		game.getCardsPlayed().clear();
-		int dealerIndex = game.getDealerIndex();
-		if (dealerIndex != 0) {
-			//starts at the dealer, haveing players play
-			//their cards
-			for (int i = dealerIndex; i < 4; i++) {
-				game.makePlay(i);
-			}
-		}
-		alertLabel.setText("Play a card");
-
-		//update();
-	}
+//	private void trick() {
+//		game.getCardsPlayed().clear();
+//		int dealerIndex = game.getDealerIndex();
+//		if (dealerIndex != 0) {
+//			//starts at the dealer, haveing players play
+//			//their cards
+//			for (int i = dealerIndex; i < 4; i++) {
+//				game.makePlay(i);
+//			}
+//		}
+//
+//		//update();
+//	}
 
 	/**
 	 * Listens for component events and alters the game and gui state
@@ -429,8 +418,9 @@ public class EuchreGUI extends JFrame {
 	private class EventListener implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-			try {
+//			try {
 				System.out.println("event");
+				System.out.println(game.getGameState());
 				if (e.getSource().equals(startButton)) {
 					game.startRound();
 				}
@@ -442,7 +432,8 @@ public class EuchreGUI extends JFrame {
 						game.dealerSwap();
 					} else if (game.getGameState() == GameState.PLAYERSTOPCARD) {
 						// player decided to pick up top card
-						// player needs to pick a card to swap from their hand
+						// player needs to pick a card to swap 
+						// from their hand
 						game.setGameState(GameState.PLAYERSWAP);
 					}
 				}
@@ -459,7 +450,7 @@ public class EuchreGUI extends JFrame {
 					}
 				}
 				
-				for (int i = 0; i < playerCards.get(i).size(); i++) {
+				for (int i = 0; i < playerCards.get(0).size(); i++) {
 					if (e.getSource() == playerCards.get(0).get(i)) {
 						if (game.getGameState() == GameState.PLAYERSWAP) {
 							game.getPlayers()[0].swap(game.getTopCard(),
@@ -471,14 +462,16 @@ public class EuchreGUI extends JFrame {
 							playerCards.get(0).remove(i);
 							cardsPanel.remove(i);
 							game.trickAfter();
+							scoreLabel.setText(scoreText());
+							game.trickReset();
 						}
 					}
 				}
-			} catch (Exception exc) {
-				System.out.println(exc);
-			} finally {
+//			} catch (Exception exc) {
+//				System.out.println(exc);
+//			} finally {
 				update();
-			}
+//			}
 		}
 
 	}
