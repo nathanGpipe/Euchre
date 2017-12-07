@@ -1,6 +1,8 @@
 package game;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -12,25 +14,85 @@ import org.junit.Test;
  */
 public class PlayerTest {
 
-	Card h1 = new Card("Ten", 10, Suit.HEARTS);
-	Card h2 = new Card("Jack", 11, Suit.HEARTS);
-	Card h3 = new Card("King", 13, Suit.HEARTS);
-	Card h4 = new Card("Ace", 14, Suit.HEARTS);
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card h1 = new Card("Ten", 10, Suit.HEARTS);
 
-	Card d1 = new Card("Ten", 10, Suit.DIAMONDS);
-	Card d2 = new Card("Jack", 11, Suit.DIAMONDS);
-	Card d3 = new Card("King", 13, Suit.DIAMONDS);
-	Card d4 = new Card("Ace", 14, Suit.DIAMONDS);
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card h2 = new Card("Jack", 11, Suit.HEARTS);
 
-	Card c1 = new Card("Ten", 10, Suit.CLUBS);
-	Card c2 = new Card("Jack", 11, Suit.CLUBS);
-	Card c3 = new Card("King", 13, Suit.CLUBS);
-	Card c4 = new Card("Ace", 14, Suit.CLUBS);
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card h3 = new Card("King", 13, Suit.HEARTS);
 
-	Card s1 = new Card("Ten", 10, Suit.SPADES);
-	Card s2 = new Card("Jack", 11, Suit.SPADES);
-	Card s3 = new Card("King", 13, Suit.SPADES);
-	Card s4 = new Card("Ace", 14, Suit.SPADES);
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card h4 = new Card("Ace", 14, Suit.HEARTS);
+
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card d1 = new Card("Ten", 10, Suit.DIAMONDS);
+
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card d2 = new Card("Jack", 11, Suit.DIAMONDS);
+
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card d3 = new Card("King", 13, Suit.DIAMONDS);
+
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card d4 = new Card("Ace", 14, Suit.DIAMONDS);
+
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card c1 = new Card("Ten", 10, Suit.CLUBS);
+	
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card c2 = new Card("Jack", 11, Suit.CLUBS);
+	
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card c3 = new Card("King", 13, Suit.CLUBS);
+	
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card c4 = new Card("Ace", 14, Suit.CLUBS);
+
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card s1 = new Card("Ten", 10, Suit.SPADES);
+	
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card s2 = new Card("Jack", 11, Suit.SPADES);
+	
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card s3 = new Card("King", 13, Suit.SPADES);
+	
+	/**
+	 * Card object to be used throughout test methods.
+	 */
+	private Card s4 = new Card("Ace", 14, Suit.SPADES);
 
 	/**
 	 * Test method for chooseTrump().
@@ -278,7 +340,7 @@ public class PlayerTest {
 		Card topOfDeck = new Card("Queen", 12, Suit.CLUBS);
 		p1.swap(topOfDeck);
 
-		boolean result = (p1.getHand().contains(topOfDeck)
+		boolean result = (p1.getHand().contains(topOfDeck) 
 				&& p1.getHand().size() == 5);
 
 		assertTrue(result);
