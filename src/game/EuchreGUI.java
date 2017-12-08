@@ -36,7 +36,7 @@ public class EuchreGUI extends JFrame {
 	private static final int FRAME_HEIGHT = 790;
 
 	/** The color Blue used by the game board. */
-	private static final Color BLUE = new Color(0x2980b9);
+	private static final Color BLUE = new Color(0x5a74a0);
 
 	/** The color White used by the game board. */
 	private static final Color WHITE = new Color(0xecf0f1);
@@ -207,9 +207,9 @@ public class EuchreGUI extends JFrame {
 				JButton cardButton;
 				//only show the players cards, not your opponents/partners
 				if (i == 0) {
-					cardButton = new JButton(cardGraphic(hand.get(j)));
+					cardButton = new JButton(cardGraphic(hand.get(j), false));
 				} else {
-					cardButton = new JButton(cardGraphic(null));
+					cardButton = new JButton(cardGraphic(null, i % 2 == 1));
 				}
 
 				buildImageButton(cardButton);
@@ -232,14 +232,17 @@ public class EuchreGUI extends JFrame {
 		}
 
 
-		pickupButton = new JButton(cardGraphic(game.getTopCard()));
+		pickupButton = new JButton(cardGraphic(game.getTopCard(), false));
 		buildImageButton(pickupButton);
 		pickupButton.addActionListener(eventListener);
 
 		centerTable.add(pickupButton);
 
 
-		passButton = new JButton("PASS");
+		passButton = new JButton(new ImageIcon("resources/pass_button.GIF"));
+		passButton.setDisabledIcon(
+				new ImageIcon("resources/pass_button_BW.GIF"));
+		buildImageButton(passButton);
 		passButton.addActionListener(eventListener);
 		scoreLabel = new JLabel(scoreText());
 		trumpLabel = new JLabel("");
@@ -263,6 +266,7 @@ public class EuchreGUI extends JFrame {
 	 * Sets player's buttons back up.
 	 */
 	private void resetButtons() {
+	
 		ArrayList<Card> hand = game.getPlayers()[0].getHand();
 		ArrayList<JButton> buttons = new ArrayList<JButton>();
 		System.out.println("Player " + 0 + ", size " + hand.size());
@@ -270,7 +274,7 @@ public class EuchreGUI extends JFrame {
 		for (int j = 0; j < hand.size(); j++) {
 
 			JButton cardButton;
-			cardButton = new JButton(cardGraphic(hand.get(j)));
+			cardButton = new JButton(cardGraphic(hand.get(j), false));
 
 			buildImageButton(cardButton);
 			cardsPanel.add(cardButton);
@@ -281,7 +285,7 @@ public class EuchreGUI extends JFrame {
 		}
 		playerCards.set(0, buttons);
 		
-		pickupButton.setIcon(cardGraphic(game.getTopCard()));
+		pickupButton.setIcon(cardGraphic(game.getTopCard(), false));
 		buildImageButton(pickupButton);
 		
 		centerTable.add(pickupButton);
@@ -305,7 +309,8 @@ public class EuchreGUI extends JFrame {
 		for (int i = 0; i < playedCards.size(); i++) {
 			System.out.println("------ " + i);
 
-			JButton button = new JButton(cardGraphic(playedCards.get(i)));
+			JButton button = new JButton(
+					cardGraphic(playedCards.get(i), false));
 			buildImageButton(button);
 			centerTable.add(button);
 
@@ -418,10 +423,14 @@ public class EuchreGUI extends JFrame {
 	 * @return An ImageIcon of the card corresponding to the given
 	 * card c.
 	 */
-	private ImageIcon cardGraphic(final Card c) {
+	private ImageIcon cardGraphic(final Card c, final boolean rotate) {
 		String path;
 		if (c == null) {
-			path = "resources/cards/back1.GIF";
+			if (rotate) {
+				path = "resources/cards/back1_rotated.GIF";
+			} else {
+				path = "resources/cards/back1.GIF";
+			}
 		} else if (c.getValue() < 11) {
 			path = "resources/cards/" 
 					+ c.getValue() 
@@ -466,7 +475,8 @@ public class EuchreGUI extends JFrame {
 	 * data
 	 */
 	private String scoreText() {
-		return "<html>ROUND POINTS<br>Team 1: " 
+		return "<html><div style='text-align: center;'>"
+				+ "ROUND POINTS<br>Team 1: " 
 				+ game.getTeam1points()
 				+ "<br>Team 2: "
 				+ game.getTeam2points()
@@ -541,7 +551,7 @@ public class EuchreGUI extends JFrame {
 						playerCards.get(0).remove(i);
 						cardsPanel.remove(i);
 						JButton cardButton = new JButton(cardGraphic(
-								game.getTopCard()));
+								game.getTopCard(), false));
 						buildImageButton(cardButton);
 						cardsPanel.add(cardButton);
 						cardButton.addActionListener(eventListener);
@@ -589,4 +599,3 @@ public class EuchreGUI extends JFrame {
 	}
 
 }
-
