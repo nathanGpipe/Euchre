@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -278,7 +279,7 @@ public class EuchreGUI extends JFrame {
 
 			buttons.add(cardButton);
 		}
-		playerCards.add(buttons);
+		playerCards.set(0, buttons);
 		
 		pickupButton.setIcon(cardGraphic(game.getTopCard()));
 		buildImageButton(pickupButton);
@@ -325,6 +326,63 @@ public class EuchreGUI extends JFrame {
 			alertLabel.setText("Pick a card to swap from your hand.");
 		} else if (game.getGameState() == GameState.TRICK) {
 			alertLabel.setText("Play a card");
+		} else if (game.getGameState() == GameState.PLAYERSUIT) {
+			if (game.getDealerIndex() == 0) {
+				Object[] options = {"Hearts", "Diamonds", "Clubs", 
+						"Spades"};
+				int n = JOptionPane.showOptionDialog(null, "What suit "
+						+ "would you like for trump?", 
+						"Choose Trump", JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, 
+						options[0]);
+				switch (n) {
+				case 0:
+					game.setTrump(Suit.HEARTS);
+					break;
+				case 1:
+					game.setTrump(Suit.DIAMONDS);
+					break;
+				case 2:
+					game.setTrump(Suit.CLUBS);
+					break;
+				case 3:
+					game.setTrump(Suit.SPADES);
+					break;
+				default:
+					break;
+				}
+				game.setGameState(GameState.TRICK);
+			} else {
+				Object[] options = {"Hearts", "Diamonds", "Clubs",
+						"Spades", "Pass"};
+				int n = JOptionPane.showOptionDialog(null, "What "
+						+ "suit would you like for trump?", "Choose "
+						+ "Trump", JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, 
+						options[4]);
+				switch (n) {
+				case 0:
+					game.setTrump(Suit.HEARTS);
+					game.setGameState(GameState.TRICK);
+					break;
+				case 1:
+					game.setTrump(Suit.DIAMONDS);
+					game.setGameState(GameState.TRICK);
+					break;
+				case 2:
+					game.setTrump(Suit.CLUBS);
+					game.setGameState(GameState.TRICK);
+					break;
+				case 3:
+					game.setTrump(Suit.SPADES);
+					game.setGameState(GameState.TRICK);
+					break;
+				case 4:
+					break;
+				default:
+					break;
+				}
+			}
 		}
 		//
 		//		if (!roundFinished) {
