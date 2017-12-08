@@ -119,6 +119,7 @@ public class EuchreGame {
 	public void startRound() {
 		if (getDealerIndex() == 0) {
 			// the player is the dealer
+			trickStart = 1;
 			if (!dealerCard(1)) {
 				if (!dealerCard(2)) {
 					if (!dealerCard(3)) {
@@ -134,14 +135,14 @@ public class EuchreGame {
 			return;
 		} else { 
 			// an AI is the dealer
+			if (dealerIndex == 3) {
+				trickStart = 0;
+			} else {
+				trickStart = dealerIndex + 1;
+			}
 			for (int i = dealerIndex + 1; i < 4; i++) {
 				if (dealerCard(i)) {
 					gameState = GameState.TRICK;
-					if (dealerIndex == 3) {
-						trickStart = 0;
-					} else {
-						trickStart = dealerIndex + 1;
-					}
 					trickBefore();
 					return;
 				}
@@ -271,12 +272,22 @@ public class EuchreGame {
 	}
 	
 	/**
+	 * This method swaps the topCard from the player's hand.
+	 * @param rem The card to remove from the player's hand.
+	 */
+	public void playerSwap(final Card rem) {
+		players[0].swap(topCard, rem);
+		trump = topCard.getSuit();
+	}
+	
+	/**
 	 * This method removes a card from the player's hand
 	 * and puts it on the table.
 	 * @param cardIndex the card to move in the hand.
 	 */
 	public void playerPlay(final int cardIndex) {
-		cardsPlayed.add(players[0].getHand().remove(cardIndex));
+		cardsPlayed.add(players[0].getHand().get(cardIndex));
+		players[0].getHand().remove(cardIndex);
 	}
 
 	/**

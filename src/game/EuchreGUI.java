@@ -136,11 +136,12 @@ public class EuchreGUI extends JFrame {
 		eventListener = new EventListener();
 		//clickListener = new ClickListener();
 
+
 		initDisplay();
 		game.startRound();
 		alertLabel = new JLabel();
 		infoPanel.add(alertLabel);
-		update();
+//		update();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
@@ -430,9 +431,7 @@ public class EuchreGUI extends JFrame {
 						// from their hand
 						game.setGameState(GameState.PLAYERSWAP);
 					}
-				}
-
-				if (e.getSource().equals(passButton)) {
+				} else if (e.getSource().equals(passButton)) {
 					passButton.setEnabled(false);
 					if (game.getGameState() == GameState.DEALERSTOPCARD) {
 						// player did not want dealer to pick up top card
@@ -447,12 +446,19 @@ public class EuchreGUI extends JFrame {
 				for (int i = 0; i < playerCards.get(0).size(); i++) {
 					if (e.getSource() == playerCards.get(0).get(i)) {
 						if (game.getGameState() == GameState.PLAYERSWAP) {
-							game.getPlayers()[0].swap(game.getTopCard(),
-									game.getPlayers()[0].getHand()
-									.get(i));
-						}
-						
-						if (game.getGameState() == GameState.TRICK) {
+							game.playerSwap(game.getPlayers()[0]
+									.getHand().get(i));
+							playerCards.get(0).remove(i);
+							cardsPanel.remove(i);
+							JButton cardButton = new JButton(cardGraphic(
+									game.getTopCard()));
+							buildImageButton(cardButton);
+							cardsPanel.add(cardButton);
+							cardButton.addActionListener(eventListener);
+							playerCards.get(0).add(cardButton);
+							game.trickBefore();
+						} else if (game.getGameState() 
+								== GameState.TRICK) {
 							game.playerPlay(i);
 							playerCards.get(0).remove(i);
 							cardsPanel.remove(i);
@@ -486,114 +492,4 @@ public class EuchreGUI extends JFrame {
 	}
 
 }
-
-// old actionlistener class
-
-//@Override
-//public void actionPerformed(final ActionEvent e) {
-//	try {
-//		System.out.println("Event");
-//		if (beginningPhase) {
-//			if (e.getSource().equals(passButton)) {
-//				passButton.setEnabled(false);
-//				for (int i = 0; i < game.getDealerIndex(); i++) {
-//					if (game.dealerCard(i)) {
-//						beginningPhase = false;
-//						break;
-//					}
-//				}
-//				if (beginningPhase) {
-//					//ask each AI if they want to choose trump
-//					if (!game.chooseTrump(1)) {
-//						if (!game.chooseTrump(2)) {
-//							game.chooseTrump(3);
-//						}
-//					}
-//					beginningPhase = false;
-//				}
-//				trumpLabel.setText("Trump is: " 
-//						+ game.getTrump().name());
-//				//passButton.setEnabled(false);
-//
-//				//tell the dealer to pickup the card
-//			} else if (e.getSource().equals(pickupButton) 
-//					&& game.getDealerIndex() != 0) {
-//				game.setTrump(game.getTopCard().getSuit());
-//				System.out.println("picked up");
-//				game.getPlayers()[game.getDealerIndex()]
-//						.swap(game.getTopCard());
-//
-//
-//				passButton.setEnabled(false);
-//				trumpLabel.setText("Trump is: " 
-//						+ game.getTrump().name());
-//
-//			} else {
-//				// you've gotta choose trump
-//				if (game.getDealerIndex() == 0) {
-//					for (int i = 0; i < playerCards.get(0).size(); i++) {
-//						if (e.getSource() == playerCards.get(0).get(i)) {
-//							//sets trump
-//							game.setTrump(game.getTopCard().getSuit());
-//							trumpLabel.setText("Trump is: " 
-//									+ game.getTrump().name());
-//
-//							//corrects the gui
-//							playerCards.get(0).remove(i);
-//							cardsPanel.remove(i);
-//
-//							playerCards.get(0).add(
-//									buildImageButton(
-//									new JButton(
-//									cardGraphic(game.getTopCard()))));
-//							cardsPanel.add(playerCards.get(0).get(
-//									playerCards.get(0).size() - 1));
-//							beginningPhase = false;
-//
-//							trumpLabel.setText("Trump is: " 
-//									+ game.getTrump().name());
-//							//passButton.setEnabled(false);
-//							break;
-//						}
-//					}
-//				}
-//			}
-//			//regular play
-//		} else {
-//			for (int i = 0; i < playerCards.get(0).size(); i++) {
-//				if (e.getSource() == playerCards.get(0).get(i)) {
-//					//plays the players card which corresponds to the card
-//					//clicked
-//					
-//					//handle this in EuchreGame
-//					game.getCardsPlayed().add(
-//							game.getPlayers()[0]
-//									.getHand().get(i));
-//					playerCards.get(0).remove(i);
-//					cardsPanel.remove(i);
-//
-//					if (game.getDealerIndex() != 0) {
-//						for (int j = 1; j < game.getDealerIndex(); j++) {
-//							game.makePlay(i);
-//						}
-//					} else {
-//						for (int j = 1; j < 4; j++) {
-//							game.makePlay(i);
-//						}
-//					}
-//
-//					game.checkWin();
-//					if(game.getGameState() != 0) {
-//						roundFinished = true;
-//					}
-//
-//					scoreLabel.setText(scoreText());
-//
-//				}
-//			}
-//		}
-//	} catch (Exception exc) {
-//		System.out.println(exc);
-//	} finally {
-//		update();
 
