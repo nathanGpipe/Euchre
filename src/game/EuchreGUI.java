@@ -74,11 +74,6 @@ public class EuchreGUI extends JFrame {
 	 */
 	private JButton passButton;
 
-	/**
-	 * Pressed to start the game.
-	 */
-	private JButton startButton;
-
 
 	/**
 	 * Used in the beginning of the game.
@@ -145,6 +140,7 @@ public class EuchreGUI extends JFrame {
 		game.startRound();
 		alertLabel = new JLabel();
 		infoPanel.add(alertLabel);
+		update();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
@@ -421,16 +417,14 @@ public class EuchreGUI extends JFrame {
 //			try {
 				System.out.println("event");
 				System.out.println(game.getGameState());
-				if (e.getSource().equals(startButton)) {
-					game.startRound();
-				}
 
 				if (e.getSource().equals(pickupButton)) {
 					passButton.setEnabled(false);
 					if (game.getGameState() == GameState.DEALERSTOPCARD) {
 						// player told dealer to pick up top card
 						game.dealerSwap();
-					} else if (game.getGameState() == GameState.PLAYERSTOPCARD) {
+					} else if (game.getGameState() 
+							== GameState.PLAYERSTOPCARD) {
 						// player decided to pick up top card
 						// player needs to pick a card to swap 
 						// from their hand
@@ -454,7 +448,8 @@ public class EuchreGUI extends JFrame {
 					if (e.getSource() == playerCards.get(0).get(i)) {
 						if (game.getGameState() == GameState.PLAYERSWAP) {
 							game.getPlayers()[0].swap(game.getTopCard(),
-									game.getPlayers()[0].getHand().get(i));
+									game.getPlayers()[0].getHand()
+									.get(i));
 						}
 						
 						if (game.getGameState() == GameState.TRICK) {
