@@ -160,17 +160,18 @@ public class EuchreGame {
 	 * whether or not to pick up the top card.
 	 */
 	public void finishTopCardChoice() {
+		if (dealerIndex == 3) {
+			trickStart = 0;
+		} else {
+			trickStart = dealerIndex + 1;
+		}
 		if (dealerIndex == 0) {
+			trickBefore();
 			return;
 		} else {
 			for (int i = 1; i < dealerIndex + 1; i++) {
 				if (dealerCard(i)) {
 					gameState = GameState.TRICK;
-					if (dealerIndex == 3) {
-						trickStart = 0;
-					} else {
-						trickStart = dealerIndex + 1;
-					}
 					trickBefore();
 					return;
 				}
@@ -185,6 +186,11 @@ public class EuchreGame {
 	 * player to choose trump.
 	 */
 	public void trumpRound() {
+		if (dealerIndex == 3) {
+			trickStart = 0;
+		} else {
+			trickStart = dealerIndex + 1;
+		}
 		for (int i = dealerIndex + 1; i < 4; i++) {
 			if (chooseTrump(i)) {
 				gameState = GameState.TRICK;
@@ -320,6 +326,9 @@ public class EuchreGame {
 	 */
 	public void dealerSwap() {
 		players[dealerIndex].swap(topCard);
+		trump = topCard.getSuit();
+		gameState = GameState.TRICK;
+		trickBefore();
 	}
 
 

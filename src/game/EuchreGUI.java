@@ -141,7 +141,7 @@ public class EuchreGUI extends JFrame {
 		game.startRound();
 		alertLabel = new JLabel();
 		infoPanel.add(alertLabel);
-//		update();
+		//		update();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
@@ -259,6 +259,29 @@ public class EuchreGUI extends JFrame {
 	}
 
 	/**
+	 * Sets player's buttons back up.
+	 */
+	private void resetButtons() {
+		ArrayList<Card> hand = game.getPlayers()[0].getHand();
+		ArrayList<JButton> buttons = new ArrayList<JButton>();
+		System.out.println("Player " + 0 + ", size " + hand.size());
+		//iterate over the players cards
+		for (int j = 0; j < hand.size(); j++) {
+
+			JButton cardButton;
+			cardButton = new JButton(cardGraphic(hand.get(j)));
+
+			buildImageButton(cardButton);
+			cardsPanel.add(cardButton);
+
+			cardButton.addActionListener(eventListener);
+
+			buttons.add(cardButton);
+		}
+		playerCards.add(buttons);
+	}
+
+	/**
 	 * Refreshes the display to show the current game state.
 	 */
 	private void update() {
@@ -282,7 +305,7 @@ public class EuchreGUI extends JFrame {
 
 		// re-render components with changed imageicons
 		SwingUtilities.updateComponentTreeUI(this);
-		
+
 		if (game.getGameState() == GameState.PLAYERSTOPCARD) {
 			alertLabel.setText("Do you want to pick up the top card?");
 		} else if (game.getGameState() == GameState.DEALERSTOPCARD) {
@@ -294,10 +317,10 @@ public class EuchreGUI extends JFrame {
 		} else if (game.getGameState() == GameState.TRICK) {
 			alertLabel.setText("Play a card");
 		}
-//
-//		if (!roundFinished) {
-//			trick();
-//		}
+		//
+		//		if (!roundFinished) {
+		//			trick();
+		//		}
 	}
 
 
@@ -392,19 +415,19 @@ public class EuchreGUI extends JFrame {
 	 * Has the AI's before the player make their plays, then prompts the
 	 * player to play a card.
 	 */
-//	private void trick() {
-//		game.getCardsPlayed().clear();
-//		int dealerIndex = game.getDealerIndex();
-//		if (dealerIndex != 0) {
-//			//starts at the dealer, haveing players play
-//			//their cards
-//			for (int i = dealerIndex; i < 4; i++) {
-//				game.makePlay(i);
-//			}
-//		}
-//
-//		//update();
-//	}
+	//	private void trick() {
+	//		game.getCardsPlayed().clear();
+	//		int dealerIndex = game.getDealerIndex();
+	//		if (dealerIndex != 0) {
+	//			//starts at the dealer, haveing players play
+	//			//their cards
+	//			for (int i = dealerIndex; i < 4; i++) {
+	//				game.makePlay(i);
+	//			}
+	//		}
+	//
+	//		//update();
+	//	}
 
 	/**
 	 * Listens for component events and alters the game and gui state
@@ -415,64 +438,67 @@ public class EuchreGUI extends JFrame {
 	private class EventListener implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
-//			try {
-				System.out.println("event");
-				System.out.println(game.getGameState());
+			//			try {
+			System.out.println("event");
+			System.out.println(game.getGameState());
 
-				if (e.getSource().equals(pickupButton)) {
-					passButton.setEnabled(false);
-					if (game.getGameState() == GameState.DEALERSTOPCARD) {
-						// player told dealer to pick up top card
-						game.dealerSwap();
+			if (e.getSource().equals(pickupButton)) {
+				passButton.setEnabled(false);
+				if (game.getGameState() == GameState.DEALERSTOPCARD) {
+					// player told dealer to pick up top card
+					game.dealerSwap();
+				} else if (game.getGameState() 
+						== GameState.PLAYERSTOPCARD) {
+					// player decided to pick up top card
+					// player needs to pick a card to swap 
+					// from their hand
+					game.setGameState(GameState.PLAYERSWAP);
+				}
+			} else if (e.getSource().equals(passButton)) {
+				passButton.setEnabled(false);
+				if (game.getGameState() == GameState.DEALERSTOPCARD) {
+					// player did not want dealer to pick up top card
+					game.finishTopCardChoice();
+				} else if (game.getGameState()
+						== GameState.PLAYERSTOPCARD) {
+					// player did not want to pick up top card
+					game.finishTopCardChoice();
+				}
+			}
+
+			for (int i = 0; i < playerCards.get(0).size(); i++) {
+				if (e.getSource() == playerCards.get(0).get(i)) {
+					if (game.getGameState() == GameState.PLAYERSWAP) {
+						game.playerSwap(game.getPlayers()[0]
+								.getHand().get(i));
+						playerCards.get(0).remove(i);
+						cardsPanel.remove(i);
+						JButton cardButton = new JButton(cardGraphic(
+								game.getTopCard()));
+						buildImageButton(cardButton);
+						cardsPanel.add(cardButton);
+						cardButton.addActionListener(eventListener);
+						playerCards.get(0).add(cardButton);
+						game.trickBefore();
 					} else if (game.getGameState() 
-							== GameState.PLAYERSTOPCARD) {
-						// player decided to pick up top card
-						// player needs to pick a card to swap 
-						// from their hand
-						game.setGameState(GameState.PLAYERSWAP);
-					}
-				} else if (e.getSource().equals(passButton)) {
-					passButton.setEnabled(false);
-					if (game.getGameState() == GameState.DEALERSTOPCARD) {
-						// player did not want dealer to pick up top card
-						game.finishTopCardChoice();
-					} else if (game.getGameState()
-							== GameState.PLAYERSTOPCARD) {
-						// player did not want to pick up top card
-						game.finishTopCardChoice();
-					}
-				}
-				
-				for (int i = 0; i < playerCards.get(0).size(); i++) {
-					if (e.getSource() == playerCards.get(0).get(i)) {
-						if (game.getGameState() == GameState.PLAYERSWAP) {
-							game.playerSwap(game.getPlayers()[0]
-									.getHand().get(i));
-							playerCards.get(0).remove(i);
-							cardsPanel.remove(i);
-							JButton cardButton = new JButton(cardGraphic(
-									game.getTopCard()));
-							buildImageButton(cardButton);
-							cardsPanel.add(cardButton);
-							cardButton.addActionListener(eventListener);
-							playerCards.get(0).add(cardButton);
-							game.trickBefore();
-						} else if (game.getGameState() 
-								== GameState.TRICK) {
-							game.playerPlay(i);
-							playerCards.get(0).remove(i);
-							cardsPanel.remove(i);
-							game.trickAfter();
-							scoreLabel.setText(scoreText());
-							game.trickReset();
+							== GameState.TRICK) {
+						game.playerPlay(i);
+						playerCards.get(0).remove(i);
+						cardsPanel.remove(i);
+						game.trickAfter();
+						scoreLabel.setText(scoreText());
+						if (game.getGameState() == GameState.ROUNDEND) {
+							resetButtons();
 						}
+						game.trickReset();
 					}
 				}
-//			} catch (Exception exc) {
-//				System.out.println(exc);
-//			} finally {
-				update();
-//			}
+			}
+			//			} catch (Exception exc) {
+			//				System.out.println(exc);
+			//			} finally {
+			update();
+			//			}
 		}
 
 	}
