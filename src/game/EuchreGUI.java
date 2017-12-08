@@ -118,6 +118,11 @@ public class EuchreGUI extends JFrame {
 	 * Is used to notify the player about the game state.
 	 */
 	private JLabel alertLabel;
+	
+	/**
+	 * Flag for keeping the pickupButton.
+	 */
+	private boolean pickupFlag;
 
 
 	/**
@@ -144,6 +149,7 @@ public class EuchreGUI extends JFrame {
 		infoPanel.add(alertLabel);
 		//		update();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		pickupFlag = false;
 	}
 
 
@@ -285,22 +291,30 @@ public class EuchreGUI extends JFrame {
 		}
 		playerCards.set(0, buttons);
 		
-		pickupButton.setIcon(cardGraphic(game.getTopCard(), false));
+		pickupButton = new JButton(cardGraphic(game.getTopCard(), false));
 		buildImageButton(pickupButton);
 		
+		centerTable.removeAll();
 		centerTable.add(pickupButton);
+		tableCards.add(pickupButton);
+		
+		pickupButton.addActionListener(eventListener);
 		
 		passButton.setEnabled(true);
 		
 		SwingUtilities.updateComponentTreeUI(this);
+		pickupFlag = true;
 	}
 
 	/**
 	 * Refreshes the display to show the current game state.
 	 */
 	private void update() {
-
-		centerTable.removeAll();
+		if (pickupFlag) {
+			pickupFlag = false;
+		} else {
+			centerTable.removeAll();
+		}
 		//trumpLabel.setText("Trump is: " + game.getTrump().name());
 		//update the center tables played cards
 		ArrayList<Card> playedCards = game.getCardsPlayed();
@@ -316,10 +330,6 @@ public class EuchreGUI extends JFrame {
 
 			tableCards.add(button);
 		}
-
-
-		// re-render components with changed imageicons
-		SwingUtilities.updateComponentTreeUI(this);
 
 		if (game.getGameState() == GameState.PLAYERSTOPCARD) {
 			alertLabel.setText("Do you want to pick up the top card?");
@@ -389,6 +399,9 @@ public class EuchreGUI extends JFrame {
 				}
 			}
 		}
+
+		// re-render components with changed imageicons
+		SwingUtilities.updateComponentTreeUI(this);
 		//
 		//		if (!roundFinished) {
 		//			trick();
