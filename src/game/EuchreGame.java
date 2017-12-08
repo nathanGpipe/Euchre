@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author Nathan Pipe, Tressa Groelsma, Saxton Stafford
@@ -93,7 +94,8 @@ public class EuchreGame {
 		team2score = 0;
 		gameState = GameState.BEGINNINGPHASE;
 
-		dealerIndex = (int) (Math.random() * 4);
+		Random rnd = new Random();
+		dealerIndex = rnd.nextInt(4);
 
 		cardsPlayed = new ArrayList<Card>(4);
 
@@ -394,9 +396,7 @@ public class EuchreGame {
 			throw new IllegalArgumentException();
 		}
 		int returnIndex = -1;
-		// keeps track of what players played trump cards
 		ArrayList<Integer> trumpIndexes = new ArrayList<Integer>();
-		// keeps track of the trump cards
 		ArrayList<Card> trumpCards = new ArrayList<Card>();
 		for (int i = 0; i < 4; i++) { // counts number of trump cards
 			if (cardsPlayed.get(i).getSuit() == trump) {
@@ -563,7 +563,7 @@ public class EuchreGame {
 		for (int j = 0; j < 4; j++) { 
 			// goes through all four players
 			curDeal++;
-			if(curDeal >= 4) {
+			if (curDeal >= 4) {
 				curDeal -= 4;
 			}
 			//System.out.println(curDeal);
@@ -575,7 +575,7 @@ public class EuchreGame {
 		for (int j = 0; j < 4; j++) {
 			// goes through all four players
 			curDeal++;
-			if(curDeal >= 4) {
+			if (curDeal >= 4) {
 				curDeal -= 4;
 			}
 			players[curDeal].addToHand(cardDeck.deal());
@@ -584,7 +584,7 @@ public class EuchreGame {
 		}
 		topCard = cardDeck.deal();
 	}
-
+	
 	/**
 	 * Returns player objects.
 	 * @return The players.

@@ -213,9 +213,11 @@ public class EuchreGUI extends JFrame {
 				JButton cardButton;
 				//only show the players cards, not your opponents/partners
 				if (i == 0) {
-					cardButton = new JButton(cardGraphic(hand.get(j), false));
+					cardButton = new JButton(
+							cardGraphic(hand.get(j), false));
 				} else {
-					cardButton = new JButton(cardGraphic(null, i % 2 == 1));
+					cardButton = new JButton(
+							cardGraphic(null, Math.abs(i) % 2 == 1));
 				}
 
 				buildImageButton(cardButton);
@@ -435,6 +437,7 @@ public class EuchreGUI extends JFrame {
 	 * @param c The given card.
 	 * @return An ImageIcon of the card corresponding to the given
 	 * card c.
+	 * @param rotate Whether or not to rotate a card.
 	 */
 	private ImageIcon cardGraphic(final Card c, final boolean rotate) {
 		String path;
