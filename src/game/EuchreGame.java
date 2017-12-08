@@ -73,8 +73,6 @@ public class EuchreGame {
 	 * Player that started the current trick.
 	 */
 	private int trickStart;
-	
-	//TODO: Get your shit together
 
 	/**
 	 * Runs the Euchre game.

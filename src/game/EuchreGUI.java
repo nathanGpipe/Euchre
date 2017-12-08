@@ -279,6 +279,15 @@ public class EuchreGUI extends JFrame {
 			buttons.add(cardButton);
 		}
 		playerCards.add(buttons);
+		
+		pickupButton.setIcon(cardGraphic(game.getTopCard()));
+		buildImageButton(pickupButton);
+		
+		centerTable.add(pickupButton);
+		
+		passButton.setEnabled(true);
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	/**
@@ -482,15 +491,19 @@ public class EuchreGUI extends JFrame {
 						game.trickBefore();
 					} else if (game.getGameState() 
 							== GameState.TRICK) {
+						boolean flag = false;
 						game.playerPlay(i);
 						playerCards.get(0).remove(i);
 						cardsPanel.remove(i);
 						game.trickAfter();
 						scoreLabel.setText(scoreText());
 						if (game.getGameState() == GameState.ROUNDEND) {
-							resetButtons();
+							flag = true;
 						}
 						game.trickReset();
+						if (flag) {
+							resetButtons();
+						}
 					}
 				}
 			}
