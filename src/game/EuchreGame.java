@@ -100,7 +100,6 @@ public class EuchreGame {
 		cardsPlayed = new ArrayList<Card>(4);
 
 		trump = null;
-		trickStart = 0;
 
 		winState = 0;
 
@@ -237,8 +236,13 @@ public class EuchreGame {
 	 * player in a trick.
 	 */
 	public void trickBefore() {
+		if (trickStart == 0) {
+			gameState = GameState.TRICK;
+			return;
+		}
 		for (int i = trickStart; i < 4; i++) {
 			makePlay(i);
+			System.out.println("check before");
 		}
 		gameState = GameState.TRICK;
 	}
@@ -248,8 +252,12 @@ public class EuchreGame {
 	 * trick.
 	 */
 	public void trickAfter() {
+		if (trickStart == 0) {
+			trickStart = 4;
+		}
 		for (int i = 1; i < trickStart; i++) {
 			makePlay(i);
+			System.out.println("check after");
 		}
 		trickStart = checkWin();
 	}
@@ -292,8 +300,7 @@ public class EuchreGame {
 	 * @param cardIndex the card to move in the hand.
 	 */
 	public void playerPlay(final int cardIndex) {
-		cardsPlayed.add(players[0].getHand().get(cardIndex));
-		players[0].getHand().remove(cardIndex);
+		cardsPlayed.add(players[0].getHand().remove(cardIndex));
 	}
 
 	/**
