@@ -61,6 +61,17 @@ public class Player {
 		hand.remove(getWorstCard(c.getSuit()));
 		addToHand(c);
 	}
+	
+	/**
+	 * Swaps the given card with the specified one from the hand.
+	 * 
+	 * @param add The card to add to the hand.
+	 * @param rem The card to remove from the hand.
+	 */
+	public void swap(final Card add, final Card rem) {
+		hand.remove(rem);
+		addToHand(add);
+	}
 
 	/**
 	 * Looks at what cards are on the table and chooses which card to play.
