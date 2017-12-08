@@ -63,12 +63,12 @@ public class EuchreGame {
 	 * 0 - Playing, 1 - Team 1 Wins, 2 - Team 2 wins.
 	 */
 	private int winState;
-	
+
 	/**
 	 * State of the game.
 	 */
 	private GameState gameState;
-	
+
 	/**
 	 * Player that started the current trick.
 	 */
@@ -109,7 +109,7 @@ public class EuchreGame {
 		//			}
 		//		}
 	}
-	
+
 	/**
 	 * Handles the beginning state of the game.
 	 */
@@ -149,9 +149,9 @@ public class EuchreGame {
 			gameState = GameState.DEALERSTOPCARD;
 			return;
 		}
-		
+
 	}
-	
+
 	/**
 	 * This method cycles through the remaining AI to decide
 	 * whether or not to pick up the top card.
@@ -177,7 +177,7 @@ public class EuchreGame {
 			trumpRound();
 		}
 	}
-	
+
 	/**
 	 * This method goes through the AI until the
 	 * player to choose trump.
@@ -202,7 +202,7 @@ public class EuchreGame {
 		}
 		gameState = GameState.PLAYERSUIT;
 	}
-	
+
 	/**
 	 * This method cycles through the remaining AI to decide
 	 * whether or not to choose trump.
@@ -221,14 +221,10 @@ public class EuchreGame {
 			}
 		}
 		gameState = GameState.TRICK;
-		if (dealerIndex == 3) {
-			trickStart = 0;
-		} else {
-			trickStart = dealerIndex + 1;
-		}
+		trickStart = dealerIndex + 1;
 		trickBefore();
 	}
-	
+
 	/**
 	 * This method goes through the AI playing before the
 	 * player in a trick.
@@ -244,7 +240,7 @@ public class EuchreGame {
 		}
 		gameState = GameState.TRICK;
 	}
-	
+
 	/**
 	 * This method cycles through the remaining AI for a
 	 * trick.
@@ -259,7 +255,7 @@ public class EuchreGame {
 		}
 		trickStart = checkWin();
 	}
-	
+
 	/**
 	 * Handles trick and round ends and turnovers.
 	 */
@@ -282,7 +278,7 @@ public class EuchreGame {
 			trickBefore();
 		}
 	}
-	
+
 	/**
 	 * This method swaps the topCard from the player's hand.
 	 * @param rem The card to remove from the player's hand.
@@ -291,7 +287,7 @@ public class EuchreGame {
 		players[0].swap(topCard, rem);
 		trump = topCard.getSuit();
 	}
-	
+
 	/**
 	 * This method removes a card from the player's hand
 	 * and puts it on the table.
@@ -325,7 +321,7 @@ public class EuchreGame {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This method swaps the top card into the dealer's hand.
 	 */
@@ -352,7 +348,7 @@ public class EuchreGame {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This method asks the player of the given index to play a card
 	 * from their hand.
